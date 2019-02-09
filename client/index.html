@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Fancy Todo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" media="screen" href="style.css">
+    <meta name="google-signin-client_id" content="1044222864150-j6i5dsrch11cddpg7jic43rfeq4jg5qe.apps.googleusercontent.com">
+</head>
+<body>
+  <!-- navbar -->
+        <nav id="navbarTogether" class="navbar navbar-expand-lg navbar-dark bg-primary">
+                <a class="navbar-brand" href="#">Navbar</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+              
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                      <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">Link</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Dropdown
+                      </a>
+                      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                      </div>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                    </li>
+                  </ul>
+                  <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                  </form>
+                  <a href="#" onclick="signOut();">Sign out</a>
+                </div>
+              </nav>
+
+    <!-- <h1>FANCY TODO</h1> -->
+
+  <!-- signup form -->
+    <div id="signup_form" >
+      Sign Up Form
+      <form id="signup_data">
+        <div class="form-group">
+            <label for="exampleInputEmail1">Full Name</label>
+            <input type="text" class="form-control" mail1 aria-describedby="emailHelp" placeholder="Enter Full Name" id="fullname_signup">
+            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Email address</label>
+          <input type="email" class="form-control"  aria-describedby="emailHelp" placeholder="Enter email" id="email_signup">
+          <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Password</label>
+          <input type="password" class="form-control"  placeholder="Password" id="pass_signup">
+        </div>
+        <div class="form-group form-check">
+          <input type="checkbox" class="form-check-input">
+          <label class="form-check-label" for="exampleCheck1">Check me out</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+    <br>
+    <br>
+    <!-- login form -->
+    <div id="signInButton">
+        Sign In with Google
+        <div id="gSignIn" class="g-signin2" data-onsuccess="onSignIn"></div>
+    </div> <br>
+
+    <div id="login_form">
+        Login Form
+        <form id="login_data" action="post">
+          <div class="form-group">
+            <label for="exampleInputEmail1">Email address</label>
+            <input type="email" class="form-control" id="email_login" aria-describedby="emailHelp" placeholder="Enter email">
+            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputPassword1">Password</label>
+            <input type="password" id="pass_login" class="form-control"  placeholder="Password">
+          </div>
+          <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+      </div>
+
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    <script>
+      if (!localStorage.getItem('token')) {
+        swal("Authentication Failed", "You have to login first");
+      } else {
+        $.post('http://localhost:3000/verify', { token: localStorage.getItem('token') })
+        .done(response => {
+          console.log(response)
+          if (response.msg === 'Token Invalid') {
+            swal("Authentication Failed", "Token Invalid!", "error");
+          }
+        })
+        .fail(err => {
+          console.log(err)
+        })
+      }
+
+      $('#signup_form').hide()
+      $('#signup_data').submit(function (event) {
+        event.preventDefault()
+        $.post('http://localhost:3000/signup', {
+          full_name: $('#fullname_signup').val(),
+          email: $('#email_signup').val(),
+          password: $('#pass_signup').val()
+        })
+        .done(response => {
+          console.log('====', response)
+        })
+        .fail(err => {
+          let modelValidation = ''
+          if (err.responseJSON.err.errors.full_name) modelValidation = 'full_name'
+          else if (err.responseJSON.err.errors.email) modelValidation = 'email'
+          else modelValidation = 'password'
+          swal("Validation Failed", `${err.responseJSON.err.errors[`${modelValidation}`].message}`, "error");
+        })
+      })
+
+      $('#login_form').submit(function (event) {
+        event.preventDefault()
+        $.post('http://localhost:3000/', {
+          email: $('#email_login').val(),
+          password: $('#pass_login').val()
+        })
+        .done(response => {
+          localStorage.setItem('token', response)
+        })
+        .fail(err => {
+          swal("Validation Failed", `${err.responseJSON.msg}`, "error");
+        })
+      })
+
+      function onSignIn(googleUser) {
+        const id_token = googleUser.getAuthResponse().id_token
+        $.post('http://localhost:3000/', { token: id_token })
+        .done(response => {
+          localStorage.setItem('token', response)
+        })
+        .fail(err => {
+          console.log(err)
+        })
+      }
+
+      function signOut() {
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut()
+        .then(function () {
+          localStorage.removeItem('token')
+          swal("User signed out.");
+          console.log('User signed out.');
+        });
+      }
+    
+    </script>
+</body>
+</html>

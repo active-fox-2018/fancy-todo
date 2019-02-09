@@ -1,0 +1,32 @@
+{
+  "name": "fancy-todo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mahdihrs/fancy-todo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mahdihrs/fancy-todo/issues"
+  },
+  "homepage": "https://github.com/mahdihrs/fancy-todo#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^6.2.0",
+    "express": "^4.16.4",
+    "google-auth-library": "^3.1.0",
+    "jsonwebtoken": "^8.4.0",
+    "local-storage": "^1.4.2",
+    "mongoose": "^5.4.10",
+    "sweetalert": "^2.1.2"
+  }
+}
