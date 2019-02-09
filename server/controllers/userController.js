@@ -1,6 +1,6 @@
 const User = require('../models/user')
 const {OAuth2Client} = require('google-auth-library');
-const client = new OAuth2Client(process.env.CLIENT_ID);
+const client = new OAuth2Client('1044222864150-j6i5dsrch11cddpg7jic43rfeq4jg5qe.apps.googleusercontent.com')//(process.env.CLIENT_ID);
 const generateJWT = require('../helpers/generateJWT')
 const bcrypt = require('bcryptjs');
 const decode = require('../helpers/verifyUser')
@@ -50,6 +50,7 @@ class Controller {
                 audience: process.env.CLIENT_ID
             })
             .then(ticket => {
+                // console.log(ticket)
                 const payload = ticket.getPayload()
                 userData = payload
                 return User.findOne({
@@ -61,7 +62,7 @@ class Controller {
                     return User.create({
                         full_name: userData.name,
                         email: userData.email,
-                        password: '0000'
+                        password: '000000'
                     })
                     .then(newUser => {
                         let token = generateJWT(newUser)
@@ -93,10 +94,7 @@ class Controller {
         .then(newUser => {
             res
                 .status(201)
-                .json({
-                    msg: `New user has been created`,
-                    data: newUser
-                })
+                .json(newUser)
         })
         .catch(err => {
             let modelValidation = ''
@@ -123,6 +121,25 @@ class Controller {
                     msg: `Token Invalid`
                 })
         }
+    }
+
+    static getTodos(req, res) {
+        User.findOne({
+            _id: req.params.id
+        })
+        .populate('todos')
+        .then(user => {
+            res.json(user.todos)
+        })
+        .catch(err => {
+            console.log(err)
+            res
+                .status(500)
+                .json({
+                    msg: `Internal Server Error`,
+                    err: err
+                })            
+        })
     }
 }
 

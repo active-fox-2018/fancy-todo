@@ -48,7 +48,16 @@
                 </div>
               </nav>
 
-    <!-- <h1>FANCY TODO</h1> -->
+  <!-- <h1>CLIENT SIDE FANCY TODO</h1> -->
+  <button onclick="fetchTodos()">All Todos</button>
+  <!-- <div id="listtodo" onclick="fetchTodos()">All Todos</div> -->
+  <form id="addNewTodo">
+    Name:
+    <input type="text" placeholder="Write new todo" id="todo"> <br>
+    Description:
+    <input type="text" placeholder="(Optional)" id="desc"> <br>
+    <button type="submit">Add Todo</button>
+  </form>
 
   <!-- signup form -->
     <div id="signup_form" >
@@ -105,13 +114,17 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    <script src="todo.js"></script>
     <script>
+      $('#signup_form').hide()
+      $('#login_form').hide()
+
       if (!localStorage.getItem('token')) {
         swal("Authentication Failed", "You have to login first");
       } else {
         $.post('http://localhost:3000/verify', { token: localStorage.getItem('token') })
         .done(response => {
-          console.log(response)
+          // console.log(response)
           if (response.msg === 'Token Invalid') {
             swal("Authentication Failed", "Token Invalid!", "error");
           }
@@ -121,16 +134,20 @@
         })
       }
 
-      $('#signup_form').hide()
       $('#signup_data').submit(function (event) {
         event.preventDefault()
         $.post('http://localhost:3000/signup', {
           full_name: $('#fullname_signup').val(),
           email: $('#email_signup').val(),
-          password: $('#pass_signup').val()
+          password: $('#pass_signup').val(),
+          todos: []
         })
         .done(response => {
-          console.log('====', response)
+          if (localStorage.getItem('token')) {
+            swal("Sign Up Forbidden", "You have to logout first", "error");
+          } else {
+            localStorage.setItem('token', response)
+          }
         })
         .fail(err => {
           let modelValidation = ''
