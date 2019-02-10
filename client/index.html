@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+  <meta name="google-signin-client_id" content="1061187022160-pvscbjvom1vrfjadl355hcv5hjf19kb3.apps.googleusercontent.com">
+  <title>FANCY TODO</title>
+<style>
+.responsive {
+    overflow-x: auto;
+}
+.table__wrapper {
+  overflow-x: auto;
+}
+</style>
+</head>
+<body>
+
+  
+<!--START HOMEPAGE-->
+<section class="hero is-success is-fullheight has-background-info hompage">
+    <div class="hero-body">
+      <div class="container">
+        <h1 class="title">
+          FANCY TODO
+        </h1>
+        <h2 class="subtitle">
+          Let me remind you what to do
+        </h2>
+        <a class="button is-warning login">login</a>
+        <a class="button is-danger register">create acount</a>
+      </div>
+    </div>
+  </section>
+<!--END HOMEPAGE-->
+
+
+
+<!--START LOGIN FORM-->
+<div class="modal" id="login">
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Login</p>
+        <button class="delete" aria-label="close"></button>
+      </header>
+      <form action="" id="login-input">
+      <section class="modal-card-body">
+      <!-- START CONTENT LOGIN ... -->
+        <div class="field">
+            <label class="label">Email</label>
+            <div class="control">
+              <input class="input" type="email" placeholder="e.g. alexsmith@gmail.com" id="login_email">
+            </div>
+          </div>
+        
+          <div class="field">
+            <label class="label">Password</label>
+            <div class="control">
+              <input class="input" type="password" placeholder="current-password" id="login_password">
+            </div>
+            <br>
+            <div class="g-signin2" data-onsuccess="onSignIn"></div>
+          </div>
+      <!-- END CONTENT LOGIN ... -->
+      </section>
+      <footer class="modal-card-foot">
+        <button class="button is-success" type="submit">Login</button>
+      </footer>
+      </form>
+    </div>
+  </div>
+<!--END LOGIN FORM-->
+
+<!--START REGISTER FORM-->
+<div class="modal" id="register">
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Register</p>
+        <button class="delete" aria-label="close"></button>
+      </header>
+      <form action="" id="register-input">
+      <section class="modal-card-body">
+      <!-- START CONTENT REGISTER ... -->
+        <div class="field">
+          <label class="label">Name</label>
+          <div class="control">
+            <input class="input" type="text" placeholder="alex smith" id="register_name">
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Email</label>
+          <div class="control">
+            <input class="input" type="email" placeholder="e.g. alexsmith@gmail.com" id="register_email">
+          </div>
+        </div>
+        
+          <div class="field">
+            <label class="label">Password</label>
+            <div class="control">
+              <input class="input" type="password" placeholder="current-password" id="register_password">
+            </div>
+            <br>
+            <div class="g-signin2" data-onsuccess="onSignIn"></div>
+          </div>
+      <!-- END CONTENT REGISTER ... -->
+      </section>
+      <footer class="modal-card-foot">
+        <button class="button is-success" type="submit">Register</button>
+      </footer>
+      </form>
+    </div>
+  </div>
+<!--END REGISTER FORM-->
+
+<!--START CONTENT FOR TODO SECTION -->
+<!--START BANNER-->
+  <div class="private has-background-danger">
+      <section class="hero is-info">
+          <div class="hero-body">
+            <div class="container">
+              <h1 class="title banner">
+                
+              </h1>
+              <h2 class="subtitle">
+                
+              </h2>
+            </div>
+          </div>
+        </section>
+    <div class="tabs is-centered">
+        <ul>
+          <li class="is-active"><a>list Todo</a></li>
+          <li><a id="create_todo">Completed Task</a></li>
+          <li><a href="#" onclick="signOut();">Sign out</a></li>
+        </ul>
+    </div>
+<!--END BANNER-->
+<!-- START TODO BODY-->
+<section class="section">
+    <div class="container">
+        <div class="tile is-ancestor">
+            <div class="tile is-4 is-vertical is-parent">
+              <div class="tile is-child box">
+                <h1 class="title has-text-danger has-text-centered">MY TODO LIST</h1>
+                <form action="" class="todolist">
+                <div class="field">
+                  <label class="label has-text-danger ">Name</label>
+                  <div class="control">
+                    <input class="input" id="todo_name" type="text" placeholder="Task Name">
+                  </div>
+                </div>
+                    
+                <div class="field">
+                  <label class="label has-text-danger ">Deadline</label>
+                  <div class="control has-icons-left has-icons-right">
+                    <input class="input" id ="todo_date" type="date" value="">
+                  </div>
+                </div>
+          
+                <div class="field">
+                  <label class="label has-text-danger ">Description</label>
+                  <div class="control">
+                    <textarea class="textarea" id="todo_description" placeholder="Describe the task"></textarea>
+                  </div>
+                </div>
+                <div class="field is-grouped">
+                  <div class="control">
+                    <button type = "submit" class="button is-danger submit">Submit</button>
+                    <button class="button cancel-submit">Cancel</button>
+                  </div>
+                </div>
+                </form>
+              </div>
+              <div class="tile is-child box">
+                <p class="title">Today's weather</p>
+                <div class="weather"></div>
+              </div>
+     
+            </div>
+            <div class="tile is-parent responsive">
+                <div class="tile is-child box task responsive">
+                    <p class="title has-text-danger has-text-centered">What To Do?</p>
+                    <div class="table_wrapper responsive">
+                    <table class="table is-hoverable responsive">
+                        <thead>
+                            <tr>
+                              <th></abbr></th>
+                              <th>Task</th>
+                              <th>Deadline</th>
+                              <th>Description</th>
+                              <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table_todo">
+                        </tbody>
+                    </table>
+                  </div>
+                  </div>
+            </div>
+<!-- START table TODO COMPLETE-->
+
+<!-- END table TODO COMPLETE-->
+          </div>
+    </div>
+  </section>
+<!--END TODO BODY-->
+  </div>
+<!--END CONTENT FOR TODO -->
+
+<!--START MODAL TODO -->
+<div class="modal" id="todo">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+      <br><br><br>
+    <!-- START table TODO COMPLETE-->
+      <div class="tile is-parent responsive">
+        <div class="tile is-child box task responsive">
+            <p class="title">Completed To Do</p>
+            <table class="table is-hoverable">
+                <thead>
+                    <tr>
+                      <th></abbr></th>
+                      <th>Task</th>
+                      <th>Deadline</th>
+                      <th>Description</th>
+                      <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="table_todo_complete">
+                </tbody>
+            </table>
+          </div>
+      </div>
+<!-- END table TODO COMPLETE-->
+    </div>
+    <button class="modal-close is-large delete" aria-label="close"></button>
+  </div>
+<!--END MODAL TODO -->
+
+<!--START MODAL EDIT TASK-->
+<div class="modal" id="edit-task">
+     <div class="modal-background"></div>
+  <div class="modal-content">
+    <section class="section">
+            <h1 class="title has-text-danger has-text-centered">MY TODO LIST</h1> <br><br>
+            <form action="" class="todolist-edit">
+            <div class="field">
+              <label class="label has-text-danger ">Name</label>
+              <div class="control">
+                <input class="input" id="edit_name" type="text" placeholder="Task Name">
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label has-text-danger ">Deadline</label>
+              <div class="control has-icons-left has-icons-right">
+                <input class="input" id ="edit_date" type="date" value="">
+              </div>
+            </div>
+      
+            <div class="field">
+              <label class="label has-text-danger ">Description</label>
+              <div class="control">
+                <textarea class="textarea" id="edit_description" placeholder="Describe the task"></textarea>
+              </div>
+            </div>
+            <div class="field is-grouped">
+              <div class="control">
+                <button type = "submit" class="button is-danger submit">Submit</button>
+                <button type = "button" class="button cancel-submit">Cancel</button>
+              </div>
+            </div>
+            </form>
+      
+      </section>
+    </div>
+   <button class="modal-close is-large delete" aria-label="close"></button>
+</div>
+<!--END MODAL EDIT TASK-->
+
+<!--START FOOTER-->
+<footer class="footer has-background-danger">
+  <div class="content has-text-centered">
+    <p class="has-text-info">
+      <strong class="has-text-white">TODO</strong> by <a class="has-text-white" href="https://github.com/mariaulfa33">MARIA ULFA</a>.
+    </p>
+  </div>
+</footer>
+<!--END FOOTER-->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+ <script>
+   let todoData = {}
+  //HIDE PRIVATE SECTOR
+  authentication()
+
+  //CLICK LOGIN
+  $(".login").click(function() {
+    $(".modal#login").show()
+  })
+
+  // CLICK REGISTER
+  $(".register").click(function() {
+    $(".modal#login").hide()
+    $(".modal#register").show()
+  })
+
+  //CLICK X IN MODAL
+  $(".delete").click(function() {
+    $(".modal").hide()
+  })
+
+  //LOGIN 
+  $("#login-input").submit(function(event) {
+    event.preventDefault()
+    $.post("http://localhost:3000/users/login", {
+      email : $("#login_email").val(),
+      password :  $("#login_password").val()
+    })
+    .done(data => {
+      localStorage.setItem('token', data.token)
+      localStorage.setItem('id', data.id)
+      name = data.name
+      $(".modal").hide()
+      $(".hompage").hide()
+      authentication()
+      greeting(data.name)
+    })
+    .fail(err => {
+      console.log(err)
+      if(err.status == '401') {
+          swal("password salah")
+        } else if (err.status == '404') {
+          swal("email salah")
+        } else {
+          swal("internal server error")
+        }
+    })
+  })
+
+  //REGISTER USER
+  $("#register-input").submit(function(event) {
+    event.preventDefault()
+    $.post("http://localhost:3000/users/", {
+      email : $("#register_email").val(),
+      password :  $("#register_password").val(),
+      name : $("#register_name").val()
+    })
+    .done(data => {
+      $(".modal").hide()
+      $(".modal#login").show()
+      $(".modal-card-body").append(`
+      <h6 class ="subtitle is-6 has-text-danger"> success create account, please login</h6>
+      `)
+    })
+    .fail(err => {
+      console.log(err)
+      swal("sorry we have a problem")
+    })
+  })
+
+  //SHOW FORM TODO
+  $("#create_todo").click(function() {
+    $(".modal#todo").show()
+  })
+
+  //SUBMIT TODO LIST
+  $(".todolist").submit(function(event) {
+    event.preventDefault()
+    $.ajax({
+      type: "POST",
+      beforeSend: function(request) {
+        request.setRequestHeader("token", localStorage.getItem('token'))
+      },
+      url: 'http://localhost:3000/todos',
+      data: {
+          name : $("#todo_name").val(),
+          description : $("#todo_description").val(),
+          id : localStorage.getItem('id'),
+          due_date : $("#todo_date").val()
+        }
+      })
+    .done(data => {
+      $("#todo_name").val("")
+      $("#todo_date").val("")
+      $("#todo_description").val("")
+      todoData[data._id] = data
+      insertTodo('', data) 
+    })
+    .fail(err => {
+      console.log(err)
+      swal("please login")
+    })
+  })
+
+  //google sign in
+  function onSignIn(googleUser) {
+    const profile = googleUser.getBasicProfile()
+    const Id_token = googleUser.getAuthResponse().id_token
+    $.post("http://localhost:3000/users/google", {
+      token : Id_token
+    })
+    .done(data => {
+      console.log(data)
+      localStorage.setItem('token', data.token)
+      localStorage.setItem('id', data.id)
+      $(".modal").hide()
+      $(".hompage").hide()
+      greeting(data.name)
+      authentication()
+    })
+    .fail(err => {
+      console.log('=====================',err.status)
+      swal("internal server error")
+    })
+  }
+
+  //sign-out
+  function signOut() {
+    const auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+      localStorage.removeItem('token')
+      localStorage.removeItem('id')
+      $(".hompage").show()
+      $("#table_todo").empty()
+      $("#table_todo_complete").empty()
+      $('.title.banner').empty()
+      authentication()
+    })
+  }
+
+  //first-time load data user
+  function authentication() {
+    
+    if(localStorage.getItem('token') && localStorage.getItem('id')) {
+      $.ajax({
+        type: "GET",
+        beforeSend: function(request) {
+          request.setRequestHeader("token", localStorage.getItem('token'))
+        },
+        url: `http://localhost:3000/todos/${localStorage.getItem('id')}`
+        })
+      .done(data => {
+        $("#table_todo").empty()
+        $("#table_todo_complete").empty()
+        if(data.verification) {
+          $(".private").show()
+          $(".hompage").hide()
+          for(let i = 0;  i < data.data.length; i++) {
+            todoData[data.data[i]._id] = data.data[i]
+            if(data.data[i].status == 'uncomplete') {
+              insertTodo('', data.data[i])
+              } else if(data.data[i].status == 'complete') {
+                insertTodo('_complete', data.data[i])
+              }
+            }
+        } else {
+          $(".private").hide()
+          $(".hompage").show()
+          swal("please login")
+        }
+      })
+      .fail(err => {
+        $(".private").hide()
+        $(".hompage").show()
+        if(err.status == '401') {
+          swal("password salah")
+        } else if (err.status == '404') {
+          swal("email salah")
+        } else {
+          swal("internal server error")
+        }
+        console.log(err)
+      })
+    } else {
+      $(".private").hide()
+      $(".hompage").show()
+      swal("you just sign out")
+    }
+  }
+
+  function checkedTask(id) {
+    let status = null
+    if($(`#task-done${id}`).prop('checked')) {
+      status = 'complete'
+    } else {
+      $("#task-done"). removeAttr('checked')
+      status = 'uncomplete'
+    }
+    $(`tr.task-${id}`).empty()
+    $.ajax({
+      type: "PATCH",
+      beforeSend: function(request) {
+        request.setRequestHeader("token", localStorage.getItem('token'))
+      },
+      url: 'http://localhost:3000/todos',
+      data: {
+        status : status,
+        id : id
+      }
+      })
+      .done(data => {
+        todoData[data._id] = data
+        if(status == 'complete') {
+          status = '_complete'
+        } else {
+          status = ''
+        }
+        insertTodo(status, data)
+        
+      })
+      .fail(err => {
+        console.log(err)
+        swal("please login")
+      })
+  }
+
+  function getDate(date) {
+    var now = new Date(date);
+    var day = ("0" + now.getDate()).slice(-2);
+    var month = ("0" + (now.getMonth() + 1)).slice(-2);
+    var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
+    return today
+  }
+
+  //untuk memasukan todo ke list 
+  function insertTodo(status, data) {
+    $(`#table_todo${status}`).append(`
+        <tr class = "task-${data._id}">
+          <form id="checkbox-task-done">
+          <td><label class="checkbox">
+          <input type="checkbox" id="task-done${data._id}" onclick ="checkedTask('${data._id}')" value ="${data._id}">
+          </label></td>
+          </form>
+          <td><abbr title="${data.description}">${data.name}</abbr></td>
+          <td>${getDate(data.due_date)}</td>
+          <td>${data.description}</td>
+          <td>
+            <a class="button is-link is-outlined"  onclick = "editTask('${data._id}')">
+                <span>Show !</span>
+              </a>
+              <a class="button is-danger is-outlined" onclick = "deleteTask('${data._id}')">
+                <span>Delete</span>
+              </a>
+          </td>
+  
+        </tr>
+        `)
+        if(status == "_complete")  {
+          $(`#task-done${data._id}`).prop("checked", true)
+        }   
+  }
+
+  function deleteTask(id) {
+    swal({
+    title: "Are you sure?",
+    text: "Once deleted, you will not be able to recover this task!",
+    icon: "warning",
+    buttons: true,
+    dangerMode: true,
+  })
+  .then((willDelete) => {
+    if (willDelete) {
+      $.ajax({
+        type: "DELETE",
+        beforeSend: function(request) {
+          request.setRequestHeader("token", localStorage.getItem('token'))
+        },
+        url: 'http://localhost:3000/todos',
+        data: {
+          id : id
+        }
+        })
+        .done(data => {
+          console.log(data)
+          swal("Poof! Your imaginary file has been deleted!", {
+              icon: "success",
+          })
+          $(`tr.task-${id}`).empty()
+        })
+
+        .fail(err => {
+          console.log(err)
+          swal("sorry we have a problem")
+        })
+ 
+    } else {
+      swal("Your imaginary file is safe!");
+    }
+  });
+  }
+
+  function editTask(id) {
+    $(".modal#edit-task").show()
+    // todolist==> class
+    let todo = todoData[id]
+    $("#edit_name").val(todo.name)
+    $('#edit_date').val(getDate(todo.due_date));
+    $("#edit_description").val(todo.description)
+
+    //kalau klik submit
+    $(".todolist-edit").submit(function(event) {
+    event.preventDefault()
+      $.ajax({
+        type: "PUT",
+        beforeSend: function(request) {
+          request.setRequestHeader("token", localStorage.getItem('token'))
+        },
+        url: 'http://localhost:3000/todos',
+        data: {
+            id   : id,
+            name : $("#edit_name").val(),
+            description : $("#edit_description").val(),
+            user : localStorage.getItem('id'),
+            due_date : $("#edit_date").val(),
+            status : todo.status
+          }
+        })
+      .done(data => {
+        $("#edit_name").val("")
+        $("#edit_date").val("")
+        $("#edit_description").val("")
+        todoData[data._id] = data
+        $(`tr.task-${id}`).empty()
+        if(data.status == 'complete') {
+          insertTodo("_complete", data) 
+        } else {
+          insertTodo("", data) 
+        }
+        swal("yeay! To-Do has updated", {
+              icon: "success",
+          })
+
+        $(".modal#edit-task").hide()
+        
+      })
+      .fail(err => {
+        console.log(err)
+        swal("please login")
+      })
+    })
+    //kalau click cancel
+    $(".cancel-submit").click(function() {
+      $("#todo_name").val("")
+      $("#todo_date").val("")
+      $("#todo_description").val("")
+      $(".modal").hide()
+    })
+  }
+
+  function greeting(username) {
+    $('.title.banner').empty()
+    $('.title.banner').append(`<p>HELLO, ${username} </p>`)
+    $.get('http://localhost:3000/weather')
+    .done(data => {
+      console.log(data)
+      $('.weather').empty()
+      if(data.weather[0].main == 'Clouds') {
+        $('.weather').append(`<br>
+        <image src = "http://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/256/Status-weather-clouds-icon.png" alt = "">
+          <p>${data.weather[0].description}</p>
+          `)
+      } else {
+        $('.title.banner').append(`<p>HELLO, ${username} </p>`)
+        $('.title.banner').append(`<br>
+        <image is-64x64 src = "https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwjQkdyNq7LgAhXEgI8KHUqzCJsQjRx6BAgBEAU&url=http%3A%2F%2Fpngimages.net%2Frain-png-image-28&psig=AOvVaw07H0D3FX_4TaHZRsHrUFOX&ust=1549928291250795" alt = "">
+          `)
+      }
+    })
+    .fail(err => {
+      console.log(err)
+    })
+  }
+
+  </script>
+</body>
+</html>
