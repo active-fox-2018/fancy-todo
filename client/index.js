@@ -6,6 +6,7 @@ let tasks = []
 let myTask = []
 
 $("#taskDeadline").attr('value', parseDate(new Date))
+
 $(document).ready(
     cekLogin()
 )
@@ -125,9 +126,6 @@ function getTask () {
     .done(data => {
         tasks = data
         myTask = data.filter(el => String(el.user._id) == String(user._id))
-        // console.log(tasks)
-
-        // console.log(myTask)
     })
     .fail(err => {
         console.log(err)
@@ -328,8 +326,6 @@ function getAllProjects () {
     .done(list => {
         allProjects = list
         appendProjects(allProjects)
-        // myProjects = list.
-        // console.log(list, 'ini list')
     })
     .fail(err => {
         console.log(err)
@@ -370,7 +366,7 @@ function setProjectPage (id) {
     $('#memberList').empty()
     project[0].member.forEach(el => {
         $('#memberList').append(`
-            <img class="m-2" style="border-radius: 50%; width: 70px; height: 70px" src="${el.image}" alt="user image" >
+            <img onclick="kickMember('${id}', '${el.email}')" class="m-2" style="border-radius: 50%; width: 70px; height: 70px; cursor: pointer" src="${el.image}" alt="user image" >
         `)
     })
 
@@ -417,7 +413,7 @@ function setProjectPage (id) {
         .done(success => {
             $('#addMemberModal').modal('hide')
             $('#memberList').append(`
-                <img class="m-2" style="border-radius: 50%; width: 70px; height: 70px" src="${success.pic}" alt="user image" >
+                <img onclick="kickMember('${id}', '${success.email}')" class="m-2" style="border-radius: 50%; width: 70px; height: 70px; cursor: pointer" src="${success.pic}" alt="user image" >
             `)
         })
         .fail(err => {
@@ -429,6 +425,34 @@ function setProjectPage (id) {
     })
 }
 
-function kickMember () {
-    
+function kickMember (id, member) {
+    swal({
+        title: "Are you sure?",
+        text: "You want to kick this member?",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+            $.ajax({
+                type: 'put',
+                url: `${url}/projects/${id}/kick`,
+                headers: {
+                    token: localStorage.token
+                },
+                data: {
+                    member
+                }
+            })
+            .done(success => {
+                console.log('success', success)
+                swal('Yeay', 'You delete a member from project', 'success')
+            })
+            .fail(err => {
+                console.log(err)
+            })
+        }
+      });
+   
 }

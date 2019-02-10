@@ -1,5 +1,6 @@
 const Project = require('../models/Project')
 const ObjId = require('mongoose').Types.ObjectId
+const { sendMail } = require('../helpers/nodemailer')
 
 class ProjectController {
     static findAll (req, res) {
@@ -43,8 +44,9 @@ class ProjectController {
             req.currentProject.member.push(req.member._id)
             req.currentProject.save()
                 .then(data => {
+                    sendMail(req.member.email, `added`)
                     res.status(200).json({
-                        data, pic: req.member.image
+                        data, pic: req.member.image, email: req.member.email
                     })
                 })
                 .catch(err => {
@@ -66,6 +68,7 @@ class ProjectController {
         req.currentProject.task = task
         req.currentProject.save()
             .then(data => {
+                sendMail(req.member.email, `removed`)
                 res.status(200).json(data)
             })
             .catch(err => {
