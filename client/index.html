@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://bootswatch.com/4/lux/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="https://dewey.tailorbrands.com/production/brand_version_mockup_image/905/1663977905_635cd21a-bc7a-4301-895f-77c5f7b9fb51.png?cb=1549524305" type="image/x-icon">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <meta name="google-signin-client_id" content="509823842473-s1ourln1e4vc9o2cnl271p773ms4faep.apps.googleusercontent.com">
+    <title>Schedos</title>
+</head>
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary" style="height: 10vh">
+        <h2 onclick="appendTask(); emptyProject()" style="cursor: pointer" class="text-white">Schedos</h2>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav mr-auto">
+            </ul>
+            <div id="signInButton" class="g-signin2" data-onsuccess="onSignIn"></div>
+            <button onclick="signOut();" id="signOutButton" style="background-color:white; height: 36px; width: 120px; padding: 0" type="button" class="btn btn-secondary ml-2">Log out</button>
+            
+        </div>
+    </nav>
+
+    <div id="home" class="bg-light" style="height: 100vh; display: none">
+        <div class="row">
+            <div class="col-3">
+                <div class="row">
+
+                    <!-- PROFILE -->
+                   <div id="userInfo" style="width: 100%">
+                   </div>
+
+                </div>
+                <div class="row">
+
+                    <!-- CREATE PROJECT -->
+                    <div id="collapseExample" class="collapse jumbotron ml-3 mt-1" style="margin-bottom: 0; padding: 5px; width: 100% ">
+                        <form id="createProjectForm">
+                            <fieldset>
+                                <legend style="color: black">Create Project</legend>
+                                <hr class="mt-0">
+                                <div class="form-group">
+                                    <label style="color: black" >Title: </label>
+                                    <input required type="text" class="form-control" id="projectTitle" placeholder="Enter project title">
+                                </div>
+                            </fieldset>
+                            <button type="submit" class="btn btn-primary float-right">Create</button>
+                        </form>
+                    </div>
+
+                    <!-- CREATE TASK -->
+                    <div class="jumbotron ml-3 mt-1" style="margin-bottom: 0; padding: 25px; width: 100% ">
+                        <form id="createTaskForm" style="width: 100%">
+                            <fieldset>
+                                <legend style="color: black">Create task</legend>
+                                <hr class="mt-0">
+                                <div class="form-group">
+                                    <label style="color: black" >Title: </label>
+                                    <input required type="text" class="form-control" id="taskTitle" placeholder="Enter task title">
+                                </div>
+                                <div class="form-group">
+                                    <label style="color: black" >Description: </label>
+                                    <input required type="text" class="form-control" id="taskDescription" placeholder="Enter task description">
+                                </div>
+                                <div class="form-group">
+                                    <label style="color: black" >Deadline: </label>
+                                    <input type="date" class="form-control" id="taskDeadline" placeholder="Enter task deadline">
+                                </div>
+                            </fieldset>
+                            <button type="submit" class="btn btn-primary float-right">Create</button>
+                        </form>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="col">
+
+                <!-- MODAL EDIT TASK -->
+                <div class="modal" id="editTaskModal">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Edit Task</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="editTaskForm">
+                                <fieldset>
+                                    <div class="form-group">
+                                        <label style="color: black" >Title: </label>
+                                        <input required type="text" class="form-control" id="editTaskTitle" placeholder="Enter task title">
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="color: black" >Description: </label>
+                                        <input required type="text" class="form-control" id="editTaskDescription" placeholder="Enter task description">
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="color: black" >Deadline: </label>
+                                        <input type="date" class="form-control" id="editTaskDeadline" placeholder="Enter task deadline">
+                                    </div>
+                                </fieldset>
+                                <button type="button" class="btn btn-secondary float-right" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary float-right">Edit</button>
+                            </form>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MODAL ADD MEMBER -->
+                <div class="modal" id="addMemberModal">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Add Member</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="addMemberForm">
+                                <fieldset>
+                                    <div class="form-group">
+                                        <label style="color: black" >Member email: </label>
+                                        <input required type="text" class="form-control" id="member" placeholder="Enter member email">
+                                    </div>
+                                </fieldset>
+                                <button type="button" class="btn btn-secondary float-right" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary float-right">Add</button>
+                            </form>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MODAL ADD PROJECT TASK -->
+                <div class="modal" id="addProjectTaskModal">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Add Task</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="addProjectTaskForm">
+                                <fieldset>
+                                    <div class="form-group">
+                                        <label style="color: black" >Title: </label>
+                                        <input required type="text" class="form-control" id="addProjectTaskTitle" placeholder="Enter task title">
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="color: black" >Description: </label>
+                                        <input required type="text" class="form-control" id="addProjectTaskDescription" placeholder="Enter task description">
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="color: black" >Deadline: </label>
+                                        <input type="date" class="form-control" id="addProjectTaskDeadline" placeholder="Enter task deadline">
+                                    </div>
+                                </fieldset>
+                                <button type="button" class="btn btn-secondary float-right" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary float-right">Add Task</button>
+                            </form>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CONTENT  -->
+                <div id="projectCard"></div>
+                <div id="content" style="overflow-y: scroll; height: 89vh;" class="ml-2" >
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>
