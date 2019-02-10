@@ -5,8 +5,10 @@ const Users = require('../models/user')
 function access(req,res,next) {
     try {
         let decoded = jwt.verify(req.headers.token, process.env.JWTTOKEN)
+        console.log(typeof decoded.id,"==============ini decode");
+        
         Users
-            .findOne({ email: decoded.email })
+            .findOne({ _id: decoded.id })
             .then(user => {
                 next()
             })
@@ -15,6 +17,8 @@ function access(req,res,next) {
             })
 
     } catch (err) {
+        console.log(err);
+        
         res.status(402).json({ message: "you're not authorize for this session" })
     }
 }

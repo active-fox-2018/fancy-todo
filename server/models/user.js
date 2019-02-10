@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const encrypt = require('../helpers/encrypt')
-const bcrypt = require('bcrypt')
 
 const userSchema = new Schema({
     first_name: {
@@ -23,7 +22,8 @@ const userSchema = new Schema({
         required: true
     },
     source: String,
-    todoList: [{ type: 'ObjectId', ref: 'Todo' }]
+    todoList: [{ type: 'ObjectId', ref: 'Todo' }],
+    projects : [{ type: 'ObjectId', ref: 'Project' }]
 })
 
 

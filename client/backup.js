@@ -33,8 +33,6 @@ function check() {
                 // console.log(response);
                 return $.get(`http://localhost:3000/fancytodo/${personalData.email}`)
                     .done(response => {
-                        console.log(response);
-                        
                         clean()
                         $('#todo-header').append(`<h3>your todo lists</h3>`)
                         response[0].todoList.forEach(list => {
@@ -77,7 +75,21 @@ function check() {
         
         clean()
         $("nav").hide()
-        $('#login-form').show()
+        $('#login-form').append(`  <form id="login-form"></form>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Email address</label>
+            <input type="email" class="form-control" id="loginEmail" aria-describedby="emailHelp"
+                placeholder="Enter email" name="email">
+            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">Password</label>
+            <input type="password" class="form-control" id="loginPassword" placeholder="Password" autocomplete="off">
+        </div>
+
+        <button type="submit" class="btn btn-primary">login</button>
+        <div class="g-signin2" data-onsuccess="onSignIn"></div>
+        </form>`)
         $('#manual-signup').show()
     }
 }
@@ -93,13 +105,15 @@ $('#login-form').submit(function (event) {
 
     })
         .done(response => {
-            personalData = response.data
+            console.log('masuk');
+            
             localStorage.setItem('token', response.token)
             check()
         })
         .fail(err => {
+            swal('wrong password')
+            // console.log(err);
 
-            swal('please check again your email and password')
         })
 })
 
@@ -294,7 +308,7 @@ $('#project-form').submit(function (event) {
 
         })
         .fail(response => {
-            swal('field cannot be blank')
+            swal('internal server error')
         })
 })
 
@@ -321,7 +335,6 @@ function getProject() {
                 <p>${project.description}</p>
                 <p>${project.dueDate}</p>                          
                 <a href="#" class="btn btn-primary" onClick ="updateProject('${project._id}')">add member</a>
-                <a href="#" class="btn btn-primary" onClick ="deleteProject('${project._id}')">delete</a>
                 <a href="#" class="btn btn-primary" onClick ="getTodoProject('${project._id}')">see project todo list</a>
                 </div>
                 </div>`)
@@ -331,27 +344,6 @@ function getProject() {
         .fail(response => {
             swal('internal server error')
         })
-}
-
-function deleteProject(id) {
-    $.ajax({
-        method : 'DELETE',
-        url : `http://localhost:3000/project/${id}`,
-        data : personalData,
-        headers : {
-            "token" : localStorage.getItem('token')
-        }
-    })
-    .done(response => {
-        getProject()
-        console.log(response);
-        
-    })
-    .fail(response => {
-        swal("you're not allowed to do this action")
-        // console.log(response);
-        
-    })
 }
 
 function getTodoProject(id) {
@@ -379,8 +371,8 @@ function getTodoProject(id) {
                 <p>${todo.name}</p>
                 <p>${todo.description}</p>
                 <p>${todo.dueDate}</p>                          
-                <a href="#" class="btn btn-primary" onClick ="updateTodo('${todo._id}')">complete</a>
-                <a href="#" class="btn btn-primary" onClick ="deleteTodo('${todo._id}')">delete</a>
+                <a href="#" class="btn btn-primary" onClick ="updateProject('${todo._id}')">delete</a>
+                <a href="#" class="btn btn-primary" onClick ="getTodoProject('${todo._id}')">complete</a>
                 </div>
                 </div>`)
                 })

@@ -4,15 +4,25 @@ const Schema = mongoose.Schema
 
 
 const projectSchema = new Schema({
-    name : String,
-    description : String,
+    name : {
+        type: String,
+        required: true
+    },
+    description : {
+        type: String,
+        required: true
+    },
     admin : { type: Schema.Types.ObjectId, ref: 'User' },
-    dueDate : Date,
+    dueDate : {
+        type: Date,
+        required: true
+    },
     createdAt : {
         type : Date, 
         default : Date.now
     },
-    members : [{ type: Schema.Types.ObjectId, ref: 'User' }]
+    members : [{ type: 'ObjectId', ref: 'User' }],
+    todoList : [{ type: 'ObjectId', ref: 'Todo' }]
 
 })
 

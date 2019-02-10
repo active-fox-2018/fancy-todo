@@ -3,13 +3,22 @@ const Schema = mongoose.Schema
 
 const todoSchema = new Schema({
    
-    name : String,
-    description : String,
+    name : {
+        type: String,
+        required: true
+    },
+    description : {
+        type: String,
+        required: true
+    },
     status : {
-        type : String, 
+        type : String,
         default : 'uncomplete'
     },
-    dueDate : Date,
+    dueDate : {
+        type: Date,
+        required: true
+    },
     createdAt : {
         type : Date, 
         default : Date.now

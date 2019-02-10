@@ -55,9 +55,11 @@ class UserController {
     }
 
     static login(req,res) {
+        let user = ''
         Users
             .findOne({email : req.body.email})
-            .then(user => {
+            .then(userfind => {
+                user = userfind
                 console.log(user,"===============");
                 if(user.length == 0) {
                     res.status(403).json({message : 'username salah'})
@@ -68,8 +70,7 @@ class UserController {
                             res.status(200).json({
                                 token : jwt.sign({
                                     email : user.email,
-                                    first_name : user.first_name,
-                                    last_name : user.last_name
+                                    id : user._id
                                 },process.env.JWTTOKEN),
                                 data : user
                             })

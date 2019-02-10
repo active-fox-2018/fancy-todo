@@ -28,13 +28,12 @@ class googleController {
                                     password: 'XXXXXX',
                                     source: 'google',
                                 })
-                                .then(data => {
+                                .then(user => {
                                     res.status(201).json({
                                         message: 'new user created',
                                         token: jwt.sign({
-                                            first_name: payload.given_name,
-                                            last_name: payload.family_name,
-                                            email: payload.email
+                                            email : user.email,
+                                            id : user._id
                                         }, process.env.JWTTOKEN)
                                     })
                                 })
@@ -42,9 +41,8 @@ class googleController {
                             res.status(201).json({
                                 message: 'new user created',
                                 token: jwt.sign({
-                                    first_name: payload.given_name,
-                                    last_name: payload.family_name,
-                                    email: payload.email
+                                    email : user.email,
+                                    id : user._id
                                 }, process.env.JWTTOKEN)
                             })
                         }

@@ -1,6 +1,6 @@
 const Users = require('../models/user')
 const Todo = require('../models/todo')
-
+const Project = require('../models/project')
 
 class todoController {
 
@@ -17,16 +17,20 @@ class todoController {
         })
             .then(todo => {
                 newTodo = todo
-                // console.log(todo,"===========get ini here=====");
+                if (req.body.owner == 'user') {
+                    return Users.findOneAndUpdate({ email: req.body.email }, { $push: { todoList: newTodo._id } }, { new: true })
+                        .then(user => {
+                            res.status(201).json({ message: 'todo created' })
+                        })
 
-                return Users.findOneAndUpdate({ email: req.params.email }, { $push: { todoList: newTodo._id } }, { new: true })
-                    .then(user => {
+                } else {
+                    return Project.findOneAndUpdate({ _id: req.body.id }, { $push: { todoList: newTodo._id } }, { new: true })
+                        .then(data => {
+                            res.status(201).json({ message: 'todo created' })
+                        })
+                }
 
-                        // user.save()
-                        // console.log("=====created=====");
 
-                        res.status(201).json({ message: 'todo created' })
-                    })
             })
             .catch(err => {
                 res.status(500).json({ message: 'internal server error' })
@@ -36,20 +40,20 @@ class todoController {
     static update(req, res) {
         Todo.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
             .then(data => {
-                res.status(200).json({message : 'data updated'})
+                res.status(200).json({ message: 'data updated' })
             })
             .catch(err => {
-                res.status(500).json({message : 'internal server error'})
+                res.status(500).json({ message: 'internal server error' })
             })
     }
 
-    static delete(req,res) {
+    static delete(req, res) {
         Todo.findOneAndDelete({ _id: req.params.id })
-            .then(()=> {
-                res.status(200).json({message : 'data deleted'})
+            .then(() => {
+                res.status(200).json({ message: 'data deleted' })
             })
             .catch(err => {
-                res.status(500).json({message : 'internals server error'})
+                res.status(500).json({ message: 'internals server error' })
             })
     }
 }

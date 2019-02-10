@@ -37,11 +37,10 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#" onclick="()">Home <span
-                            class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="#" onclick="check()">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="#" onclick="projectForm()">Project <span
+                    <a class="nav-link" href="#" onclick="getProject()">Project <span
                             class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
@@ -72,13 +71,8 @@
         </div>
     </nav>
 
-    <div id="todo-form"></div>
-    <div id="todo-header"></div>
-    <div id="project-form"></div>
-    <div class="main-page"></div>
-    <div id="project-page"></div>
-
-    <form id="login-form">
+    <div id="login-form">
+        <form id="login-form">
         <div class="form-group">
             <label for="exampleInputEmail1">Email address</label>
             <input type="email" class="form-control" id="loginEmail" aria-describedby="emailHelp"
@@ -90,12 +84,26 @@
             <input type="password" class="form-control" id="loginPassword" placeholder="Password" autocomplete="off">
         </div>
 
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">login</button>
         <div class="g-signin2" data-onsuccess="onSignIn"></div>
+        </form>
+    </div>
 
-        <p>don't have account,<a href="#" onclick="signup()">click here<a /></p>
+    <div id="todo-form"></div>
+    <div id="todo-project-form"></div>
+    <div id="todo-project-header"></div>
+    <div id="todo-header"></div>
+    <div id="project-form"></div>
+    <div class="main-page"></div>
+    <div id="project-page"></div>
+    <div id="add-member"></div>
+    <div id="project-todo-list"></div>
 
-    </form>
+   
+    <div id="manual-signup">
+    <p>don't have gmail or account, <a href="#" onclick="signup()">click here<a /></p>
+    </div>
+
 
 
 
