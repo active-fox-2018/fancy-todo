@@ -1,10 +1,10 @@
 let personalData = {}
 
-// check()
+check()
 
 function check() {
     console.log('masuk check');
-    
+
     if (localStorage.getItem('token') != null) {
         $.post('http://localhost:3000/verify', { token: localStorage.getItem('token') })
             .done(response => {
@@ -12,51 +12,61 @@ function check() {
                 // console.log(response);
                 return $.get(`http://localhost:3000/fancytodo/${personalData.email}`)
                     .done(response => {
-                        console.log(response[0].todoList, "====================");
-
                         $("nav").show()
                         $('#login-form').hide()
+                        $('.main-page').empty()
+                        $('#todo-header').append(`<h3>your todo lists</h3>`)
                         response[0].todoList.forEach(list => {
-                            console.log(list);
-                            $('.main-page').append(`
+                            if (list.status == 'complete') {
+                                $('.main-page').append(` 
                             <div class="card w-50">
                             <div class="card-body">
                             <p>${list.name}</p>
                             <p>${list.description}</p>
                             <p>${list.dueDate}</p>
                             <p>${list.status}</p>                          
-                            <a href="#" class="btn btn-primary" onClick ="updateTodo('${list._id}')">complete</a>
                             <a href="#" class="btn btn-primary" onClick ="deleteTodo('${list._id}')">delete</a>
                           </div>
                         </div>`)
-
+                            } else {
+                                $('.main-page').append(`
+                                <div class="card w-50">
+                                <div class="card-body">
+                                <p>${list.name}</p>
+                                <p>${list.description}</p>
+                                <p>${list.dueDate}</p>
+                                <p>${list.status}</p>                          
+                                <a href="#" class="btn btn-primary" onClick ="updateTodo('${list._id}')">complete</a>
+                                <a href="#" class="btn btn-primary" onClick ="deleteTodo('${list._id}')">delete</a>
+                            </div>
+                            </div>`)
+                            }
                         })
-
                     })
-
-
             })
             .fail(err => {
-                // console.log(err,"=================");
+                console.log(err, "=================");
 
                 swal("you don't have access")
                 $("nav").hide()
                 $('#login-form').show()
-                $('.main-page').hide()
+                $('.main-page').empty()
             })
 
     } else {
+        // console.log(err,"================");
+
         $("nav").hide()
         $('#login-form').show()
-        $('.main-page').hide()
+        $('.main-page').empty()
     }
 }
 
 
 $('#login-form').submit(function (event) {
     event.preventDefault()
-    personalData.email = $('#loginEmail').val(),
-        personalData.password = $('#loginPassword').val()
+    // personalData.email = $('#loginEmail').val(),
+    // personalData.password = $('#loginPassword').val()
     // return $.post(`http://localhost:3000/fancytodo`, {user : user})
     $.post('http://localhost:3000/signin', {
         email: $('#loginEmail').val(),
@@ -64,9 +74,11 @@ $('#login-form').submit(function (event) {
 
     })
         .done(response => {
+            // console.log(response);
+
             localStorage.setItem('token', response.token)
             // console.log(response, "===============");
-            check()
+            return check()
             // $("nav").show()
             // 
             // $('.main-page').show(`<div id="row">masuuuuuuuuuuuuuuuuuuuuuuukkkkkkkkkkkkkkkkkkk</div>`)
@@ -83,7 +95,7 @@ function onSignIn(googleUser) {
     var id_token = googleUser.getAuthResponse().id_token;
     $.post(`http://localhost:3000/google`, { id_token })
         .done(response => {
-            console.log(response);
+            // console.log(response);
 
             localStorage.setItem('token', response.token)
             check()
@@ -181,14 +193,14 @@ $("#todo-form").submit(function (event) {
         },
         data: {
             name: $('#name').val(),
-            description : $('#description').val(),
+            description: $('#description').val(),
             dueDate: $('#dueDate').val()
         },
         method: 'POST'
     })
         .done(Response => {
-            console.log('masuk sini');
-            
+            // console.log('masuk sini');
+
             check()
         })
         .fail(err => {
@@ -208,12 +220,12 @@ function updateTodo(id) {
             status: 'complete'
         }
     })
-    .done(response => {
-        check()
-    })
-    .fail(response => {
-        swal('internal server error')
-    })
+        .done(response => {
+            check()
+        })
+        .fail(response => {
+            swal('internal server error')
+        })
 }
 
 function deleteTodo(id) {
@@ -224,12 +236,67 @@ function deleteTodo(id) {
             "token": localStorage.getItem('token')
         }
     })
+        .done(response => {
+            swal('todo deleted')
+            check()
+        })
+        .fail(response => {
+            swal('internal server error')
+        })
+}
+
+
+function projectForm() {
+
+    $('.main-page').hide()
+    $('#project-form').append(`
+    <form id="project-form">
+      <div class="form-group">
+        <label>project name:</label>
+        <input type="text" class="form-control" id="name">
+      </div>
+        <div class="form-group">
+        <label>project description:</label>
+        <input type="text" class="form-control" id="description">
+    </div>
+      <div class="form-group">
+        <label>Due Date:</label>
+        <input type="date" class="form-control" id="dueDate">
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>`)
+}
+
+
+$('#project-form').submit(function(event){
+    event.preventDefault
+    $.ajax({
+        method : 'POST',
+        url : `http://localhost:3000/projectTodo`,
+        data : {
+            name: $('#name').val(),
+            description: $('#description').val(),
+            dueDate: $('#dueDate').val(),
+            admin : personalData._id
+        }
+    })
     .done(response => {
-        swal('todo deleted')
-        check()
+        console.log(response.data);
+        response.data.forEach(project => {
+            $('#project-page').append(`
+            <div class="card w-50">
+            <div class="card-body">
+            <p>${project.name}</p>
+            <p>${project.description}</p>
+            <p>${project.dueDate}</p>                          
+            <a href="#" class="btn btn-primary" onClick ="updateProject('${project._id}')">add member</a>
+          </div>
+        </div>`)
+
+        })
+        
     })
     .fail(response => {
         swal('internal server error')
     })
-}
-
+})
