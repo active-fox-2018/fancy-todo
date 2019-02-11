@@ -1,0 +1,55 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "rahman hasri",
+      "email": "rahmanhasri@gmail.com",
+      "password": "cancan"
+    },
+    {
+      "name": "123",
+      "email": "123",
+      "password": "123",
+      "id": 2
+    },
+    {
+      "name": "123",
+      "email": "123",
+      "password": "123",
+      "id": 3
+    },
+    {
+      "name": "123",
+      "email": "123",
+      "password": "1123",
+      "id": 4
+    },
+    {
+      "name": "aditya",
+      "email": "adit",
+      "password": "adit",
+      "id": 5
+    },
+    {
+      "name": "mahdi",
+      "email": "mahdi@mail.com",
+      "password": "mahdi",
+      "id": 6
+    },
+    {
+      "name": "123",
+      "email": "123",
+      "password": "123",
+      "id": 7
+    }
+  ],
+  "todos": [
+    {
+      "id": 1,
+      "name": "buat fancy todo",
+      "description": "portofolio",
+      "status": "false",
+      "due_date": "2019-2-11"
+    }
+  ]
+}

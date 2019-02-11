@@ -1,0 +1,10 @@
+server
+1. express
+2. edit bin/www mongoose connect
+3. package.json npm install mongoose google-auth-library dotenv jsonwebtoken cors bcryptjs
+4. require dotenv, require cors
+5. bikin model
+6. mkdir controllers && touch controllers/users.js
+7. touch env && touch env-template
+  CLIENT_ID=42270467983-p1lnknuskklh5k88jhtbkc0js8rncd95.apps.googleusercontent.com
+  JWT_SECRET=SUPERSECRET

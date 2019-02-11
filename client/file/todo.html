@@ -1,0 +1,107 @@
+
+  <form method="POST" id="todoForm">
+    <input type="text" name="name" id="formTodo">
+    <input type="text" name="description" id="formDesc">
+    <input type="date" name="due_date" id="formDue">
+    <button type="submit" id="todoButton">Submit</button>
+  </form>
+  <a href="" data-value="1" id="deleteButton">delete</a>
+  <a href="" onclick="return false" data-value="1" id="complete">complete</a>
+  <a href="" onclick="return false" data-value="1" id="uncomplete">complete</a>
+  <script>
+    
+    $("#todoForm").submit( function(event) {
+      event.preventDefault()
+      addTodos()
+    })
+
+    $("#todoButton").click( function(event) {
+      event.preventDefault()
+      addTodos()
+    })
+
+
+    function addTodos() {
+        let name = $('#formTodo').val()
+        let desc = $('#formDesc').val()
+        let due = $('#formDue').val()
+        let data = {
+          "name" : name,
+          "description" : desc,
+          "due_date" : due,
+          "status" : false
+        }
+
+        $.ajax({
+          method: "POST",
+          url: 'http://localhost:3000/todos',
+          data: data,
+          headers: {
+            "token" : localStorage.getItem('token') // tambah storage id
+          }
+        })
+          .done( function(response) {
+            console.log(response)
+          })
+          .fail( function(err) {
+            console.log(err)
+          })
+    }
+
+    $('#deleteButton').click(function (event) { //selector masihsalah
+      event.preventDefault()
+      deleteTodo()
+    })
+
+    function deleteTodo() {
+      let id = $(this).data("value")
+
+      $.ajax({
+          method: "DELETE",
+          url: 'http://localhost:3000/todos/' + id,
+          // data: {_method: 'delete', _token :token},
+      })
+        .done( function(response) {
+          console.log(data)
+          $("#deleteButton").remove()
+        })
+        .fail( function(err) {
+          console.log(err)
+        })
+    }
+
+    $('#complete').click( function(event) {
+      event.preventDefault()
+      let id = $(this).data("value")
+
+      $.ajax({
+        method: "PATCH",
+        url: 'http://localhost:3000/todos/' + id,
+        data: { "status" : true },
+        success: function(data) {
+          console.log(data)
+        },
+        error: function(err) {
+          console.log('Error:', data)
+        }
+      })
+    })
+
+    $('#uncomplete').click( function(event) {
+      event.preventDefault()
+      let id = $(this).data("value")
+
+      $.ajax({
+        method: "PATCH",
+        url: 'http://localhost:3000/todos/' + id,
+        data: { "status" : false },
+        success: function(data) {
+          console.log(data)
+        },
+        error: function(err) {
+          console.log('Error:', data)
+        }
+      })
+    })
+
+  </script>

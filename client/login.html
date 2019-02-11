@@ -1,0 +1,39 @@
+  <form  method="POST" id="login">
+    <label for="email">Email</label>
+    <input type="text" name="email" id="loginEmail"><br>
+    <label for="password">password</label>
+    <input type="password" name="password" id="loginPassword"><br>
+    <button type="submit"id="loginButton">Submit</button>
+  </form>
+  <script>
+    
+    $('#loginButton').click( function(event) {
+      event.preventDefault()
+      login()
+    })
+
+    $("#login").submit( function(event) {
+      event.preventDefault()
+      login()
+    })
+
+    function login() { 
+      let email = $('#loginEmail').val()
+      let password = $('#loginPassword').val()
+      
+      $.ajax({ // LOGIN
+      // $.post('http://localhost:3000/login', data) // maybe routing with this 
+        method : "POST",
+        url: `http://localhost:3000/users/login`,
+        data: { email : email, password : password }
+      })
+        .done( function(response) {
+          console.log(response.token)
+          localStorage.setItem('token', response.token)
+          showMenu()
+        })
+        .fail( function(err) {
+          console.log(err)
+        })
+    }
+  </script>

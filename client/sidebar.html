@@ -1,0 +1,358 @@
+<div class="list-group list-group-flush"  style="max-height : 90vh; overflow: auto;">
+  <a href="#" class="list-group-item list-group-item-action bg-light" onclick="showTodos(todos)">Personals</a>
+  <a href="#" class="list-group-item list-group-item-action bg-light" onclick="showProjects()">Projects</a>
+</div>
+
+<script>
+
+  function showTodos(input) {
+  //  $('#page-content-wrapper').append(`hello menu world`)
+    $('#page-content-wrapper').html('')
+    $('#page-content-wrapper').append(`
+    <table class="table table-fit">
+      <thead>
+        <tr class="d-flex">
+          <th scope="col" class="col-2">Title</th>
+          <th scope="col" class="col-2">Description</th>
+          <th scope="col" class="col-2">Status</th>
+          <th scope="col" class="col-2">Created At</th>
+          <th scope="col" class="col-2">Due Date</th>
+          <th scope="col" class="col-2">Options</th>
+        </tr>
+      </thead>
+      <tbody>
+    `)
+
+    input.forEach( todo => {
+      let check = todo.status == 'uncomplete' ? 'Done' : 'Undone'
+      $('#page-content-wrapper').append(`
+          <tr class="d-flex">
+            <td class="col-sm-2">${todo.name}</td>
+            <td class="col-sm-2">${todo.description}</td>
+            <td class="col-sm-2">${todo.status}</td>
+            <td class="col-sm-2">${new Date(todo.createdAt)}</td>
+            <td class="col-sm-2">${new Date(todo.due_date)}</td>
+            <td class="col-sm-2">
+              <button class="btn btn-warning" type="button" name="update" onclick="updateTodo('${todo._id}', '${todo.status}')">${check}</button>
+              <button class="btn btn-danger" type="button" name="delete" onclick="deleteTodo('${todo._id}')">Delete</button>
+            </td>
+          </tr>
+      `)
+    })
+
+    $('#page-content-wrapper').append(`
+        </tbody>
+      </table>
+    `)
+    menuTodos()
+  }
+
+  function menuTodos() {
+    $('#page-content-wrapper').append(`
+      <div style="margin-left: 10px;">
+        <button class="btn btn-success" type="button" data-toggle="modal" data-target="#exampleModal">Add Todo</button>
+      </div>
+
+      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" data-backdrop="false">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Add Todo</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="title" class="col-form-label">Title</label>
+                <input type="text" class="form-control" id="todoTitle">
+              </div>
+              <div class="form-group">
+                <label for="Description" class="col-form-label">Description:</label>
+                <textarea class="form-control" id="todoDesc"></textarea>
+              </div>
+              <div class="form-group">
+              <div class="form-group">
+                <label class="col-form-label">Due Date</label>
+                <input type="date" name="bday" min="2019-01-01" max="2021-12-31" class="form-control" id="todoDue">
+              </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="addTodo">Send message</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    `)
+
+    $('#addTodo').click( function(event) { // add Todo
+      let name = $('#todoTitle').val()
+      let desc = $('#todoDesc').val()
+      let due = $('#todoDue').val()
+      let data = {
+        "name" : name,
+        "description" : desc,
+        "due_date" : due,
+        "status" : false
+      }
+      $.ajax({
+        method: "POST",
+        url: 'http://localhost:3000/todos',
+        data: data,
+        headers: {
+          "token" : localStorage.getItem('token')
+        }
+      })
+        .done( function(response) {
+          todos.push(response.data)
+          $('#exampleModal').modal('toggle')
+          $('#exampleModal').modal('toggle')
+          // $("#todoModal .close").click()
+          showTodos(todos)
+        })
+        .fail( function(err) {
+          console.log(err)
+        })
+    })
+
+  }
+
+  function showProjectTodos(index) {
+    // console.log(todos, '=============')
+  //  $('#page-content-wrapper').append(`hello menu world`)
+    // console.log(projectTodos)
+    // console.log(projectsTodos[index])
+    $('#page-content-wrapper').html('')
+    $('#page-content-wrapper').append(`
+    <table class="table table-fit">
+      <thead>
+        <tr class="d-flex">
+          <th scope="col" class="col-2">Title</th>
+          <th scope="col" class="col-2">Description</th>
+          <th scope="col" class="col-2">Status</th>
+          <th scope="col" class="col-2">Created At</th>
+          <th scope="col" class="col-2">Due Date</th>
+          <th scope="col" class="col-2">Options</th>
+        </tr>
+      </thead>
+      <tbody>
+    `)
+
+    projectsTodos[index].todos.forEach( todo => {
+      let check = todo.status == 'uncomplete' ? 'Done' : 'Undone'
+      $('#page-content-wrapper').append(`
+          <tr class="d-flex">
+            <td class="col-sm-2">${todo.name}</td>
+            <td class="col-sm-2">${todo.description}</td>
+            <td class="col-sm-2">${todo.status}</td>
+            <td class="col-sm-2">${new Date(todo.createdAt)}</td>
+            <td class="col-sm-2">${new Date(todo.due_date)}</td>
+            <td class="col-sm-2">
+              <button class="btn btn-warning" type="button" name="update" onclick="updateProjectTodo('${todo._id}', '${todo.status}', ${index})">${check}</button>
+              <button class="btn btn-danger" type="button" name="delete" onclick="deleteProjectsTodo('${projectsTodos[index]._id}','${todo._id}'. ${index})">Delete</button>
+            </td>
+          </tr>
+      `)
+    })
+
+    $('#page-content-wrapper').append(`
+        </tbody>
+      </table>
+    `)
+    menuProjectTodos(projectsTodos[index]._id, index)
+  }
+
+  function menuProjectTodos(id, index) {
+    $('#page-content-wrapper').append(`
+      <div style="margin-left: 10px;">
+        <button class="btn btn-success" type="button" data-toggle="modal" data-target="#exampleModal">Add Todo</button>
+      </div>
+
+      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" data-backdrop="false">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Add Todo</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="title" class="col-form-label">Title</label>
+                <input type="text" class="form-control" id="todoTitle">
+              </div>
+              <div class="form-group">
+                <label for="Description" class="col-form-label">Description:</label>
+                <textarea class="form-control" id="todoDesc"></textarea>
+              </div>
+              <div class="form-group">
+              <div class="form-group">
+                <label class="col-form-label">Due Date</label>
+                <input type="date" name="bday" min="2019-01-01" max="2021-12-31" class="form-control" id="todoDue">
+              </div>
+              </div>
+            </form>
+          </div>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" onclick="addProjectTodo('${id}', ${index})">Send message</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    `)
+
+  }
+
+  function showProjects() {
+    $('#page-content-wrapper').html('')
+    $('#sidebar-wrapper').html('')
+    $('#sidebar-wrapper').append('<div class="list-group list-group-flush" style="max-height : 90vh; overflow: auto;">')
+    projectsTodos.forEach( (project, index) => {
+      // console.log(project.todos)
+      // console.log(project.todos.length)
+      $('#sidebar-wrapper').append(`
+        <a href="#" class="list-group-item list-group-item-action bg-light" onclick="showProjectTodos(${index})">${project.name}</a>
+      `)
+    })
+    $('#sidebar-wrapper').append('</div>')
+    // console.log(projectsTodos)
+  }
+
+  function updateTodo(id, status) {
+
+    let newStatus = status == 'uncomplete' ? 'completed' : 'uncomplete'
+    $.ajax({
+      method: "PATCH",
+      url: 'http://localhost:3000/todos/' + id,
+      data : { status : newStatus },
+      headers: { token : localStorage.getItem('token')}
+    })
+      .done( function(response) {
+        todos.forEach( todo => {
+          if(todo._id == id) {
+            todo.status = newStatus
+          }
+        })
+
+        showTodos(todos)
+      })
+      .fail( function(err) {
+        console.log(err)
+      })
+  }
+
+  function deleteTodo(id, index) {
+
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this todo!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+    .then((willDelete) => {
+      if (willDelete) {
+        $.ajax({
+            method: "DELETE",
+            url: `http://localhost:3000/todos/${id}`,
+            headers: { token : localStorage.getItem('token')}
+            // data: {_method: 'delete', _token :token},
+        })
+          .done( function(response) {
+            // todos = todos.filter( todo => todo._id !== id)
+            showProjectTodos(index)
+          })
+          .fail( function(err) {
+            console.log(err)
+          });
+      }
+    });
+
+    }
+
+    function addProjectTodo(id, index) {
+      let name = $('#todoTitle').val()
+      let desc = $('#todoDesc').val()
+      let due = $('#todoDue').val()
+      let data = {
+        "name" : name,
+        "description" : desc,
+        "due_date" : due,
+        "status" : false
+      }
+      $.ajax({
+        method: "POST",
+        url: `http://localhost:3000/projects/${id}/todos`, //not tested
+        data: data,
+        headers: {
+          "token" : localStorage.getItem('token')
+        }
+      })
+        .done( function(response) {
+          projectsTodos[index].push(response.data)
+          $('#exampleModal').modal('toggle')
+          // $("#todoModal .close").click()
+          showProjectTodos(index)
+        })
+        .fail( function(err) {
+          console.log(err)
+        })
+    }
+
+    function updateProjectTodo(id, status, index) {
+
+      let newStatus = status == 'uncomplete' ? 'completed' : 'uncomplete'
+      $.ajax({
+        method: "PATCH",
+        url: 'http://localhost:3000/todos/' + id,
+        data : { status : newStatus },
+        headers: { token : localStorage.getItem('token')}
+      })
+        .done( function(response) {
+          todos.forEach( todo => {
+            if(todo._id == id) {
+              todo.status = newStatus
+            }
+          })
+
+          showProjectTodos(index)
+        })
+        .fail( function(err) {
+          console.log(err)
+        })
+    }
+
+    function deleteProjectTodo(id) {
+      swal({
+        title: "Are you sure?",
+        text: "Once deleted, you will not be able to recover this todo!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+          $.ajax({
+              method: "DELETE",
+              url: `http://localhost:3000/projects/todos/${id}`,
+              headers: { token : localStorage.getItem('token')}
+              // data: {_method: 'delete', _token :token},
+          })
+            .done( function(response) {
+              todos = todos.filter( todo => todo._id !== id)
+              showProjectTodos(todos)
+            })
+            .fail( function(err) {
+              console.log(err)
+            });
+        }
+      });
+    }
+</script>

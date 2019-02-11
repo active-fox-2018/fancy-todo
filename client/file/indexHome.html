@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Simple Sidebar</title>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link href="css/simple-sidebar.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+</head>
+
+<body>
+  <!-- navbar -->
+  <nav class="navbar navbar-light" style="background-color: #394267;">
+    <span class="navbar-brand mb-0 h1" style="color: #faf4d7"><a href="#" style="color: inherit; text-decoration: none;" onclick="home()">Get Things Done</a></span>
+    <span style="align-items: right;">
+      <button id="signout" class="btn btn-outline-light my-2 my-sm-0 login signout-button" type="button" onclick="signOut();">
+        Sign out
+      </button>
+    </span>
+  </nav>
+  
+
+  <div class="d-flex" id="wrapper">
+    <!-- Sidebar -->
+    <div class="bg-light border-right" id="sidebar-wrapper">
+      <div class="list-group list-group-flush"  style="max-height : 90vh; overflow: auto;">
+        <!-- <a href="#" class="list-group-item text-success" id="addTodo">Add Todo</a> -->
+        <a href="#" class="list-group-item list-group-item-action bg-light">Personals</a>
+        <a href="#" class="list-group-item list-group-item-action bg-light">Projects</a>
+      </div>
+    </div>
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+      <!-- assjdaklsjdakls -->
+      <table class="table table-fit">
+        <thead>
+          <tr class="d-flex">
+            <th scope="col" class="col-2">Title</th>
+            <th scope="col" class="col-2">Description</th>
+            <th scope="col" class="col-2">Status</th>
+            <th scope="col" class="col-2">Created At</th>
+            <th scope="col" class="col-2">Due Date</th>
+            <th scope="col" class="col-2">Options</th>
+          </tr>
+          </thead>
+        <tbody>
+          <tr class="d-flex">
+            <td class="col-sm-2">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Veniam, libero. Quibusdam iure animi commodi ad quasi modi, aliquam quo eaque magnam aliquid delectus voluptas similique quam cumque qui facilis obcaecati.</td>
+            <td class="col-sm-2"></td>
+            <td class="col-sm-2"></td>
+            <td class="col-sm-2"></td>
+            <td class="col-sm-2"></td>
+            <td>
+        <a href="/students/delete/<%= a.id%>" onclick="return confirm('Are You Sure?')"><button class="btn btn-warning" type="button" name="update">Update</button></a>
+        <a href="/students/delete/<%= a.id%>" onclick="return confirm('Are You Sure?')"><button class="btn btn-danger" type="button" name="delete">Delete</button></a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="margin-left: 10px;">
+        <a href="/students/edit/<%= a.id%>"><button class="btn btn-success" type="button" name="add" onclick="addTodo()">Add Todo</button></a>
+      </div>
+
+    </div>
+  </div>
+  <!-- /#wrapper -->
+
+  
+  <!-- Bootstrap core JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+  <script>
+    function home() {
+      $('#sidebar-wrapper').hide()
+    }
+  </script>
+</body>
+
+</html>

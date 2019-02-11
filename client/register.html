@@ -1,0 +1,37 @@
+  <form  method="POST" id="register">
+    <label for="name">Name</label>
+    <input type="text" name="name" id="formName"><br>
+    <label for="email">Email</label>
+    <input type="text" name="email" id="formEmail"><br>
+    <label for="password">Password</label>
+    <input type="password" name="password" id="formPassword"><br>
+    <button type="submit"id="regisButton">Submit</button>
+  </form>
+  <script>
+    
+    $("#register").submit( function(event) {
+      event.preventDefault()
+      let name = $('#formName').val()
+      let email = $('#formEmail').val()
+      let password = $('#formPassword').val()
+
+      let data = {
+        "name" : name,
+        "email" : email,
+        "password" : password
+      }
+
+      // $.post('http://localhost:3000/register', data) // maybe routing with this 
+      $.ajax({
+        method: "POST",
+        url: "http://localhost:3000/users/register",
+        data: data
+      })
+        .done( function(data) {
+          console.log(data)
+        })
+        .fail( function(err) {
+          console.log(err)
+        })
+    })
+  </script>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Get Things Done</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link href="css/simple-sidebar.css" rel="stylesheet">
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <meta name="google-signin-client_id" content="1048665085745-nenk83g89g5oskn4lj6dajhqfd1s71b9.apps.googleusercontent.com">
+</head>
+<body>
+
+  <!-- navbar -->
+  <nav class="navbar navbar-light" style="background-color: #394267;">
+    <span class="navbar-brand mb-0 h1" style="color: #faf4d7"><a href="#" style="color: inherit; text-decoration: none;" onclick="home()">Get Things Done</a></span>
+    <span style="align-items: right;">
+      <button href="#" id="signout" class="btn btn-outline-light my-2 my-sm-0 login signout-button" type="button" onclick="signOut();">
+        Sign out
+      </button>
+    </span>
+  </nav>
+  <div id="authContainer"class="container">
+    <div id="googleSign" class="g-signin2" data-onsuccess="onSignIn"></div>
+    <div id="loginForm"></div>
+    <div id="registerForm"></div>
+  </div>
+
+  <div class="d-flex" id="wrapper">
+    <div class="bg-light border-right" id="sidebar-wrapper">
+    </div>
+    <div id="page-content-wrapper"></div>
+  </div>
+
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script>
+
+  var todos = []
+  var projectsTodos = []
+  
+  $('button#signout').hide()
+  showLogin()
+  showRegister()
+
+  function checkLogin() {
+    if (!localStorage.getItem('token')) {
+      console.log(`You have to login first`)
+    } else {
+      $.ajax({
+        method : "POST",
+        url:`http://localhost:3000/auths/verify`, 
+        data : { token: localStorage.getItem('token') }
+      })
+        .done( function(response) {
+            // console.log(response)
+            // console.log('masuk menu right now')  
+            showMenu()
+        })
+        .fail( function(err) {
+          console.log({ err: err, msg : 'Token tidak valid' })
+        })
+    }
+  }
+
+  function onSignIn(googleUser) {
+    var profile = googleUser.getBasicProfile()
+    var id_token = googleUser.getAuthResponse().id_token
+
+    $.ajax({
+      method: 'POST',
+      url : `http://localhost:3000/auths/googleLogin`, 
+      data : { token: id_token }
+      })
+        .done( function(response) {
+          // console.log(response.token)
+          localStorage.setItem('token', response.token)
+          checkLogin()
+        })
+        .fail( function(response) {
+            console.log(err)
+        })
+  }
+
+  function signOut() {
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+      localStorage.removeItem('token')
+      $('#signout').hide()
+      $('#sidebar-wrapper').html('')
+      $('#page-content-wrapper').html('')
+      $('#authContainer').show()
+      $('#loginEmail').val('')
+      $('#loginPassword').val('')
+      console.log('User signed out.');
+    });
+  }
+
+
+  function home() {
+    if(localStorage.getItem('token')) {
+      $('#sidebar-wrapper').html('')
+      $('#page-content-wrapper').html('')
+      $.get('./sidebar.html', function(data) {
+        $('#sidebar-wrapper').html(data)
+      })
+    } else {
+      $('#authContainer').show()
+    }
+  }
+
+  function showMenu() {
+    $.get('./sidebar.html', function(data) {
+      $('#sidebar-wrapper').html(data)
+    })
+    $('#signout').show()
+    // $('.g-signin2').hide()
+    // $('#loginForm').html('')
+    $('#authContainer').hide()
+
+    // get todos
+    $.ajax({
+      method: "GET",
+      url: "http://localhost:3000/todos/",
+      headers: { token : localStorage.getItem('token')}
+    })
+      .done( function(response) {
+        // console.log(response)
+        todos = response.data
+      })
+      .fail( function(err) {
+        console.log(err)
+      })
+
+    // get projects
+    $.ajax({
+      method: "GET",
+      url: "http://localhost:3000/projects",
+      headers: { token : localStorage.getItem('token')}
+    })
+      .done( function(response) {
+        console.log(response,'projecttodos')
+        projectsTodos = response.data
+      })
+      .fail( function(err) {
+        console.log(err)
+      })
+  }
+
+  function showLogin() {
+    $.get('./login.html', function(data) {
+      $('#loginForm').html(data)
+    })
+  }
+
+  function showRegister() {
+    $.get('./register.html', function(data) {
+      $('#registerForm').html(data)
+    })
+  }
+
+</script>
+</body>
+</html>
+

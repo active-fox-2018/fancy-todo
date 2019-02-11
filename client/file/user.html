@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>User</title>
+</head>
+<body>
+  
+  <form method="GET" id="addUserProject">
+    <input type="text" name="name" id="formUser">
+    <button id="add" type="button" onclick="return fuckingFunction()">Submit</button>
+  </form>
+  <div id="container"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+  <script>
+        
+    $("#add").click( (event) => {
+      event.preventDefault()
+      fuckingFunction()
+    })
+
+    $('#addUserProject').submit( (event) => {
+      event.preventDefault()
+      fuckingFunction()
+    })
+
+    function addUserProject() {}
+    function fuckingFunction(){
+      let email = $('#formUser').val()
+      let project = null
+      // // // console.log(user)
+      // $.ajax({ // GET DULU APA UPDATE????
+      //   method: "GET",
+      //   url: `http://localhost:3000/users?email=${email}`
+      // })
+      //   .done( function(data) {
+      //     if(!data) {
+      //       console.log(`there is no user with that email`)
+      //     } else {
+            
+      //     }
+      //   })
+      //   .fail( function(err) {
+      //     console.log(err)
+      //   })
+
+      $.ajax({
+        method: "POST",
+        url: `http://localhost:3000/projects/${project}?email=${email}`
+      })
+        .done( function(data) {
+
+        })
+        .fail( function(err) {
+          console.log(err)
+        })
+    }
+
+    // function addProject() {
+    //   let name = null // req.body
+    //   // let users = [
+    //   //   {
+    //   //   }
+    //   // ]
+    //   let todos = []
+    //   $.ajax({
+    //     method: "POST"
+    //   })
+    // }
+
+  </script>
+</body>
+</html>
+
+<!--             $.get('./todo.html', function(data) {
+              $('#container').html(data)
+            }) -->

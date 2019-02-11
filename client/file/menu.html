@@ -1,0 +1,63 @@
+<table class="table table-fit">
+  <thead>
+    <tr class="d-flex">
+      <th scope="col" class="col-2">Title</th>
+      <th scope="col" class="col-2">Description</th>
+      <th scope="col" class="col-2">Status</th>
+      <th scope="col" class="col-2">Created At</th>
+      <th scope="col" class="col-2">Due Date</th>
+      <th scope="col" class="col-2">Options</th>
+    </tr>
+    </thead>
+  <tbody>
+    <tr class="d-flex">
+      <td class="col-sm-2">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Veniam, libero. Quibusdam iure animi commodi ad quasi modi, aliquam quo eaque magnam aliquid delectus voluptas similique quam cumque qui facilis obcaecati.</td>
+      <td class="col-sm-2"></td>
+      <td class="col-sm-2"></td>
+      <td class="col-sm-2"></td>
+      <td class="col-sm-2"></td>
+      <td>
+  <a href="/students/delete/<%= a.id%>" onclick="return confirm('Are You Sure?')"><button class="btn btn-warning" type="button" name="update">Update</button></a>
+  <a href="/students/delete/<%= a.id%>" onclick="return confirm('Are You Sure?')"><button class="btn btn-danger" type="button" name="delete">Delete</button></a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div style="margin-left: 10px;">
+  <a href="/students/edit/<%= a.id%>"><button class="btn btn-success" type="button" name="add" onclick="addTodo()">Add Todo</button></a>
+</div>
+
+
+<div class="modal fade" id="todoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add New Todo</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="recipient-name" class="col-form-label">Title</label>
+              <input type="text" class="form-control" id="todoTitle">
+            </div>
+            <div class="form-group">
+              <label for="message-text" class="col-form-label">Description</label>
+              <textarea class="form-control" id="message-text" id="todoDescription"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="message-text" class="col-form-label">Due Date</label>
+              <input type="date" name="due" min="2019-01-01"
+              max="2022-12-31" class="form-control" id="todoDue">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Add</button>
+        </div>
+      </div>
+    </div>
+  </div>
