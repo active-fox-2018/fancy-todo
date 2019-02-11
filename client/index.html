@@ -4,11 +4,12 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>HacktivGit</title>
+    <title>FancyTODO</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="google-signin-client_id"
-        content="635887941761-kcpt27ibgvur798du94f6bp23n2jv42o.apps.googleusercontent.com">
+        content="1040380557567-bclpp4ij3qp7vbvo6an30e1os1sk42ra.apps.googleusercontent.com">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Flamenco" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
@@ -17,74 +18,102 @@
 
 <body>
 
-    <nav class="navbar navbar-dark bg-primary justify-content-between">
-        <a class="navbar-brand">Fancy ToDo</a>
-        <!-- <form class="form-inline">
-                  <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                  <button id="myInput" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                </form> -->
-    </nav>
+        <div id="auth" class="container col-sm-12 bg-primary vh-100">
+                <br><br><br><br>
+                <form id="formSignUp" class="justify-content-center mx-auto " style="width: 18rem;">
+                  <h2 class="text-white mx-auto">Fancy Todo</h2>
+                  <br>
+                  <div class="form-group">
+                        <label for="exampleInputEmail1" class="">Name</label>
+                        <input type="email" class="form-control" id="signUpName" aria-describedby="emailHelp"
+                          placeholder="Enter email">
+                      </div>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1" class="">Email address</label>
+                    <input type="email" class="form-control" id="signUpEmail" aria-describedby="emailHelp"
+                      placeholder="Enter email">
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputPassword1">Password</label>
+                    <input type="password" class="form-control" id="signUpPassword" placeholder="Password">
+                  </div>
+                  <br>
+                  <button type="submit" class="btn btn-primary mr-5">Signup</button>
+                  <p>or continue with google</p>
+                  <div id="signInButton" class="g-signin2" data-onsuccess="onSignIn"></div>
+                </form>
+              </div>
 
-    <div class="row">
-        <div class="container col-sm-6 card" style="display:none">
-            <div class="card-body">
-                placeholder only
-            </div>
-        </div>
-        <div class="row container col-sm-5 card">
-
-        </div>
-
-    </div>
-
-    <br>
-    <div class="row">
-        <div class="container col-sm-6 card">
-            <div class="card-body">
-                Welcome, username <br>
-                What do you want to do today? <br>
-                <button type="button" id="create" class="btn btn-success" onclick="create();">Create Todo</button>
-                <button type="button" id="findAll" class="btn btn-success">Find All Todo</button>
-                <div class="card-body" id="formCreate" style="display:none">
-                    <form>
-                        <div class="form-group">
-                            <label for="name">What do you want to do? </label>
-                            <input type="text" class="form-control" id="todoName" placeholder="todo name">
+    <div id="home">
+            <nav class="navbar navbar-dark bg-primary justify-content-between">
+                    <a class="navbar-brand">Fancy ToDo</a>
+                    <button onclick="signOut();" id="signOutButton" style="background-color:white; height: 36px; width: 120px; padding: 0" type="button" class="btn btn-secondary ml-2">Log out</button>
+                    
+                </nav>
+            
+                <div class="row">
+                    <div class="container col-sm-6 card" style="display:none">
+                        <div class="card-body">
+                            placeholder only
                         </div>
-                        <div class="form-group">
-                            <label for="Description">How you want to do it?</label>
-                            <textarea class="form-control" id="todoDescription" placeholder="todo description "></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="dueDate">Due Date</label>
-                            <input type="date" class="form-control" id="dueDate">
-                        </div>
-
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </form>
+                    </div>
+                    <div class="row container col-sm-5 card">
+            
+                    </div>
+            
                 </div>
-            </div>
-        </div>
-        <div class="container col-sm-5" id="projectCreate">
-            <div class="card-body">
+            
+                <br>
+                <div class="row">
+                    <div class="container col-sm-6 card">
+                        <div class="card-body">
+                            Welcome, username <br>
+                            What do you want to do today? <br>
+                            <button type="button" id="create" class="btn btn-success" onclick="create();">Create Todo</button>
+                            <button type="button" id="findAll" class="btn btn-success" >Find All Todo</button>
+                            <div class="card-body" id="formCreate" style="display:none">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="name">What do you want to do? </label>
+                                        <input type="text" class="form-control" id="todoName" placeholder="todo name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Description">How you want to do it?</label>
+                                        <textarea class="form-control" id="todoDescription" placeholder="todo description "></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="dueDate">Due Date</label>
+                                        <input type="date" class="form-control" id="dueDate">
+                                    </div>
+            
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container col-sm-5" id="projectCreate">
+                        <div class="card-body">
+            
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="container col-sm-6 card">
+                        <div class="card-body" id="todoList">
+                            Todo list
+                        </div>
+                    </div>
+                    <div class="container col-sm-5 card">
+                        <div class="card-body">
+                            Project
+                        </div>
+                    </div>
+                </div>
+            
+    </div>              
 
-            </div>
-        </div>
-    </div>
-    <br>
-    <div class="row">
-        <div class="container col-sm-6 card">
-            <div class="card-body" id="todoList">
-                Todo list
-            </div>
-        </div>
-        <div class="container col-sm-5 card">
-            <div class="card-body">
-                Project
-            </div>
-        </div>
-    </div>
-
+    
 
 
 
