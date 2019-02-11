@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Fulist</title>
+  <!-- bootstrap / CSS-->
+  <link rel="stylesheet" href="https://bootswatch.com/4/journal/bootstrap.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+  <!-- CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+</head>
+
+
+<body>
+
+  <!-- navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">FULIST</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor03">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="#" onclick="showAllTask()">All Task</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" onclick="register()">Register</a>
+        </li>
+      </ul>
+      <!-- <fb:login-button id="login-button" ></fb:login-button> -->
+      <div class="fb-login-button" data-size="medium" data-button-type="login_with" data-auto-logout-link="false" data-use-continue-as="false"
+        scope="public_profile,email" onlogin="checkLoginState();"></div>
+      <!-- </div> -->
+      <div id="logout-button" style="float:right;">
+        <button type="button" class="btn btn-info" onclick="signout()">Sign Out</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- REGISTER LOGIN-->
+  <div id="register-login"></div>
+
+  <div class="body">
+    <!-- COlUMN -->
+    <div class="row">
+      <div id="column1" style="background-color:#aaa;">
+        <h3>Add Task</h3>
+
+        <form class="add-task">
+          <div class="form-group">
+            <label class="col-form-label" for="inputDefault"></label>
+            <input type="text" class="form-control" placeholder="Subject.." id="name" required>
+            <label for="exampleTextarea"></label>
+            <textarea class="form-control" placeholder="your notes.." id="notes" rows="2"></textarea>
+            <br>
+            <label>Deadline</label>
+            <input type="date" class="form-control" name="deadline" id="date" required>
+          </div>
+
+          <input type="submit" class="btn btn-primary btn-sm">
+        </form>
+
+      </div>
+      <div id="column2" style="background-color:#bbb;">
+        <h2>All Task</h2>
+        <div class="details-column">
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    showAllTask();
+    userVerification();
+
+    // verify
+    function show() {
+      $(document).ready(function () {
+        $('.body').show();
+        $('.fb-login-button').hide();
+        $('#logout-button').show();
+        $(`#register-login`).hide();
+      });
+    }
+
+    function hide() {
+      $(document).ready(function () {
+        $('.body').hide();
+        $('.fb-login-button').show();
+        $('#logout-button').hide();
+      });
+    }
+
+    function userVerification() {
+      if (localStorage.getItem('token')) {
+        $.post(`http://localhost:3000/user/verification`, { token: localStorage.getItem('token') })
+          .done(response => {
+            if (response.action == true) {
+              show();
+            }
+          })
+          .fail(err => {
+            console.log(err)
+          })
+      } else {
+        hide()
+        login()
+      }
+    }
+
+    // ADD task
+    $(`.add-task`).submit(function (event) {
+      event.preventDefault();
+
+      $.post(`http://localhost:3000/todo/create`, {
+        name: $('#name').val(),
+        description: $('#notes').val(),
+        status: false,
+        due_date: $('#date').val()
+      })
+        .done(response => {
+          swal("Success", "Your new task has been successfully created", "success");
+        })
+        .fail(err => {
+          console.log(err);
+        })
+    })
+
+    //show all Task
+    function showAllTask() {
+      $.get(`http://localhost:3000/todo/todo_list`)
+        .done(allTodo => {
+          $('.details-column').empty()
+          allTodo.forEach(t => {
+            $(document).ready(function () {
+              $('.details-column').append(` 
+              <h5>Deadline ---------- ${t.due_date.substring(0, 10)}</h5>
+              task:   ${t.name}<br>
+              notes: ${t.description}<br>
+              <br>
+              <form id="button-delete-completed">
+              <button type="button" class="btn btn-info" onclick="updateForm('${t.name}', '${t.description}', '${t.due_date.substring(0, 10)}', '${t._id}')">Update</button>
+                <button type="button" class="btn btn-danger" onclick="deleteTask('${t._id}')">Delete</button>
+              </form>
+              <br><br>
+              `)
+            })
+          });
+        })
+        .fail(err => {
+          console.log(err)
+        })
+    }
+
+    //update task
+    function updateForm(name, description, date, id) {
+      $('.details-column').empty()
+      $('.details-column').append(`
+      <form class="update">
+        <div class="form-group">
+          <label class="col-form-label" for="inputDefault"></label>
+          <input type="text" class="form-control" id="name" value="${name}" required>
+          <label for="Textarea"></label>
+          <textarea class="form-control" id="notes" placeholder="" rows="2"></textarea>
+          <br>
+          <label>Deadline</label>
+          <input type="date" class="form-control" name="deadline" id="date" value="${date}" required>
+        </div>
+        <button type="submit" class="btn btn-info" onclick="updateTask('${id}')">Update Task</button>
+      </form>
+      `)
+      $("Textarea#notes").val(`${description}`);
+    }
+
+    function updateTask(id) {
+      $(`.update`).submit(function (event) {
+        event.preventDefault();
+        $.post(`http://localhost:3000/todo/update/${id}`, {
+          name: $('.update #name').val(),
+          description: $('.update #notes').val(),
+          due_date: $('.update #date').val()
+        })
+          .done(response => {
+            swal("Success", "Your task has been successfully updated", "success");
+            showAllTask()
+          })
+          .fail(err => {
+            swal("Success", "Your new task has been successfully created", "info");
+          })
+      })
+    }
+
+    function deleteTask(id) {
+      console.log(id)
+      swal({
+        title: "Are you sure?",
+        text: "Once deleted, you will not be able to recover this imaginary file!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+        .then((willDelete) => {
+          if (willDelete) {
+            $.get(`http://localhost:3000/todo/delete/${id}`)
+              .done(response => {
+                console.log(response)
+                return swal("Your task has been deleted!", {
+                  icon: "success",
+                })
+              })
+              .fail(err => {
+                console.log(err)
+              })
+          } else {
+            swal("Your task has yet been deleted")
+          }
+        });
+
+    }
+
+    // register
+    function register() {
+      $('')
+      $('#register-login').empty();
+      $('#register-login').append(`
+      <div class="form-style-8">
+      <h2>Register</h2>
+        <form id="register">
+          <fieldset>
+              <div class="form-group">
+                <input type="email" class="form-control" id="fullname" placeholder="Full name..">
+              </div>
+            <br>
+              <div class="form-group">
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email..">
+              </div>
+            <br>
+              <div class="form-group">
+                <input type="password" class="form-control" id="password" placeholder="Password.." required>
+              </div>
+            <br>
+            <button type="submit" class="btn btn-primary">Register</button>
+            <br><br>
+            <p>have account? <a href="" onclick="login()">Login</a></p>
+            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        </form>
+        </div>
+        `)
+    }
+
+    function login() {
+      $('#register-login').empty();
+      $('#register-login').append(`
+      <div class="form-style-8">
+      <h2>Login</h2>
+        <form id="login">
+          <fieldset>
+            <div class="form-group">
+              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email..">
+            </div>
+            <br>
+            <div class="form-group">
+              <input type="password" class="form-control" id="password" placeholder="Password.." required>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-primary">Login</button>
+            <br>
+        </form>
+        </div>
+      `)
+    }
+
+  </script>
+  <script>
+    window.fbAsyncInit = function () {
+      FB.init({
+        appId: '373778756507984',
+        cookie: true,
+        xfbml: true,
+        version: 'v3.2'
+      });
+      FB.AppEvents.logPageView();
+    };
+
+    (function (d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.2&appId=373778756507984&autoLogAppEvents=1';
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+    function checkLoginState() {
+      FB.getLoginStatus(function (response) {
+        statusChangeCallback(response);
+      });
+    }
+
+    function statusChangeCallback(response) {
+      if (response.status === 'connected') {
+        const accessToken = response.authResponse.accessToken
+        FB.api('/me', { fields: 'name, email' }, function (response) {
+          $.post(`http://localhost:3000/user/signin`, { token: accessToken, name: response.name, email: response.email })
+            .done(token => {
+              localStorage.setItem('token', token)
+              show()
+            })
+            .fail(err => {
+              console.log(err)
+            })
+        });
+      } else {
+        document.getElementById('status').innerHTML = 'Please log ' +
+          'into this app.';
+      }
+    }
+
+    // signout
+    function signout() {
+      FB.getLoginStatus(function (ret) {
+        if (ret.authResponse) {
+          FB.logout(function (response) {
+            localStorage.removeItem('token')
+            console.log(`sign out`)
+            hide()
+            login()
+          });
+        } else {
+          console.log(`-----`);
+        }
+      })
+    }
+
+
+
+  </script>
+</body>
+
+</html>
