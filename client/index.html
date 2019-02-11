@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="google-signin-client_id" content="345583050402-lodmrm0cm2u683nj3stser78q1lgmflp.apps.googleusercontent.com">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>    
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.11.2/build/alertify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.2/build/css/alertify.min.css"/>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.2/build/css/themes/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://bootswatch.com/4/sketchy/bootstrap.css">
+    <link rel="stylesheet" href="./style.css">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <title>Fancy ToDo</title>
+</head>
+
+<body>
+    <!-- DASHBOARD -->
+    <div id="home">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+            <h1>N O T H I N G L I S T</h1>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarColor03"></div>
+            <button onclick="logOut()" class="btn btn-secondary my-2 my-sm-0" type="submit">Log Out</button>
+        </nav>
+        <div id="dashboard">
+            <div class="container">
+                <div class="row mt-3">
+                    <div class="col-sm-4">
+                        <h1>Weather Forecast</h1>
+                    </div>
+                    <div class="col-sm">
+                        <div class="input-group mb-3" style="width: 300px;margin-left: -30px;">
+                            <input type="text" class="form-control" id="city" placeholder="enter your city..." aria-label="Recipient's username" aria-describedby="button-addon2">
+                            <div class="input-group-append">
+                                <button onclick="weatherForecast()" class="btn btn-outline-secondary" type="button" id="button-addon2" data-toggle="modal" data-target="#weatherModal">Search</button>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="weatherModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Weather Forecast for the next 5 days</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" id="weatherInfo">
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div>
+                    <div id="weather"></div>
+                </div>
+                <div class="row">
+                    <!-- TASK -->
+                    <div class="col-sm-5">
+                        <h1>My Task List</h1>
+                        <p>
+                            <button 
+                                class="btn" 
+                                type="button" 
+                                data-toggle="collapse" 
+                                data-target="#collapseExample" 
+                                aria-expanded="false" 
+                                aria-controls="collapseExample"
+                                style="width:445px;"
+                                >
+                                Create New Task
+                            </button>
+                        </p>
+                        <div class="collapse" id="collapseExample">
+                            <div class="card card-body">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="title" placeholder="ToDo title..." style="color:grey">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="desc" placeholder="Notes..." style="color:grey">
+                                </div>
+                                <div class="form-group">
+                                    <input type="date" class="form-control" id="dueDate">
+                                </div>
+                                <button onclick="createTask()" type="submit" class="btn">Create</button>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="btn-group mb-2" role="group" aria-label="Basic example" style="float:right">
+                            <button type="button" class="btn" onclick="getAllTask()">All Tasks</button>
+                            <button type="button" class="btn" onclick="taskIncoming()">Incoming</button>
+                            <button type="button" class="btn" onclick="taskDone()">Done</button>
+                        </div>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" id="titleKeyword" placeholder="search task title..." aria-label="Recipient's username" aria-describedby="button-addon2">
+                            <div class="input-group-append">
+                              <button onclick="searchTask()" class="btn btn-outline-secondary" type="button" id="button-addon2">Search</button>
+                            </div>
+                        </div>
+                        <!-- Task List -->
+                        <div id="taskList"></div>
+                        <!-- Task List -->
+    
+                        <!-- Update Modal -->
+                        <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Update Task</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <label for="">Title</label>
+                                            <div class="form-group">
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control" 
+                                                    id="titleUpdt" 
+                                                    placeholder="Enter task title" 
+                                                    >
+                                            </div>
+                                            <label for="">Notes</label>
+                                            <div class="form-group">
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control" 
+                                                    id="descUpdt" 
+                                                    placeholder="Enter task description" 
+                                                    >
+                                            </div>
+                                            <label for="">Due Date</label>
+                                            <div class="form-group">
+                                                <div class="flexContainer">
+                                                    <input type="text" id="dateUpdt" class="form-control inputField">
+                                                    <button class="inputField btn btn-secondary" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                                        change due date
+                                                    </button>
+                                                </div>
+                                                <div class="collapse" id="collapseExample">
+                                                    <input type="date" class="form-control" id="dueDateUpdt">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                            <button onclick="updateTask()" data-dismiss="modal" type="button" class="btn btn-primary">Save</button>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                        <!-- Update Modal -->
+
+                    </div>
+                    <!-- TASK -->
+    
+                    <!-- GROUP -->
+                    <div class="col-sm-7">
+                            
+                        <h1>Projects<span>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" id="projectName" placeholder="create new project..." aria-label="Recipient's username" aria-describedby="button-addon2">
+                                <div class="input-group-append">
+                                    <button onclick="createProject()" class="btn btn-outline-secondary" type="button" id="button-addon2">Create</button>
+                                </div>
+                            </div>
+    
+                            </span>
+                        </h1>
+                        
+                        <!-- Notification -->
+                        <div class="notif" id="notifInvit"></div>
+                        <div id="bannerNoTask"></div>
+                        <!-- Notification -->
+    
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <div id="groupList"></div>
+                                </div>
+                                <div class="col-sm-7">
+                                    <div id="projectTodo"></div>
+                                    <div id="projectTaskList"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        <!-- Update Modal -->
+                            <div class="modal fade" id="updateProjectModal" tabindex="-1" role="dialog" aria-labelledby="exampleProjectModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleProjectModalLabel">Update Task</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <label for="">Project Title</label>
+                                            <div class="form-group">
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control" 
+                                                    id="titlePUpdt" 
+                                                    placeholder="Enter task title" 
+                                                    >
+                                            </div>
+                                            <label for="">Project Description</label>
+                                            <div class="form-group">
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control" 
+                                                    id="descPUpdt" 
+                                                    placeholder="Enter task description" 
+                                                    >
+                                            </div>
+                                            <label for="">Due Date</label>
+                                            <div class="form-group">
+                                                <div class="flexContainer">
+                                                    <input type="text" id="datePUpdt" class="form-control inputField">
+                                                    <button class="inputField btn btn-secondary" data-toggle="collapse" data-target="#collapseProjectExample" aria-expanded="false" aria-controls="collapseProjectExample">
+                                                        change due date
+                                                    </button>
+                                                </div>
+                                                <div class="collapse" id="collapseProjectExample">
+                                                    <input type="date" class="form-control" id="dueDatePUpdt">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                            <button onclick="updateProjectTask()" data-dismiss="modal" type="button" class="btn btn-primary">Save</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <!-- Update Modal -->
+                    <!-- GROUP -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- DASHBOARD -->
+
+    <!-- Login / Register -->
+    <div class="container form" style="margin-top:4%; margin-bottom:4%;">
+        <div class="jumbotron" style="height:150px; background:rgba(0, 0, 0, 0.788); margin-bottom:5%">
+            <h1 id="thetitle">N O t h i n k L I S T</h1>
+        </div>
+        <div class="row">
+            <!-- login -->
+            <div class="col-sm-5">
+                <div id="infoLogin"></div>
+                <form id="loginForm">
+                    <h3>Login</h3>
+                    <div class="form-group">
+                        <input type="email" class="form-control" id="emailLogin" aria-describedby="emailHelp" placeholder="Enter email">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" id="passLogin" placeholder="Password">
+                    </div>
+                    <button type="submit" class="btn ">Submit</button>
+                </form>
+                <hr>
+                <div class="container" id="gbutton">
+                    <h4>or <span class="g-signin2" id="my-signin2" data-onsuccess="onSignIn"></span></h4>
+                </div>
+            </div>
+            <!-- login -->
+
+            <div class="col-sm-2">
+                <div style="text-align:center; margin-top:100px;">
+                    OR
+                </div>
+            </div>
+            
+            <!-- register -->
+            <div class="col-sm-5">
+                <div id="infoRegis"></div>
+                <form id="regisForm">
+                    <h3>Register</h3>
+                    <div class="form-group">
+                        <input type="text" id="nameRegis" class="form-control" placeholder="Enter Name">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="emailRegis" class="form-control" aria-describedby="emailHelp" placeholder="Enter email">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="passRegis" class="form-control" placeholder="Password">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+            <!-- register -->
+        </div>
+    </div>
+    <!-- Login / Register -->
+
+    <!-- Footer -->
+    <div>
+        <h1 style="text-align:center"> HELLO I AM A FOOTER LOOOOHH~ </h1>
+    </div>
+    <!-- Footer -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    <script src="./script/index.js"></script>
+    <script src="./script/helpers.js"></script>
+    <script src="./script/userTodo.js"></script>
+    <script src="./script/projectTodo.js"></script>
+    <!-- <script src="./index.js"></script> -->
+    <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+</body>
+</html>
