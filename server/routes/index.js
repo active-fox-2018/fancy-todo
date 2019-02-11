@@ -3,8 +3,10 @@ const axios = require('axios')
 const userController = require('../controllers/usercontroller')
 const todoController = require('../controllers/todoController')
 const authentication = require('../middlewares/authentication')
-
+const authorization = require('../middlewares/authorization')
+const projectController = require('../controllers/projectController')
 //user
+
 router.post('/users', userController.create)
 router.post('/users/login', userController.loginManual)
 router.post('/users/google', userController.loginByGoogle)
@@ -20,14 +22,15 @@ router.get('/weather', function(req, res) {
   
 })
 
+
 router.use(authentication)
 router.get('/todos/:id', todoController.findAll)
+router.use(authorization)
 router.post('/todos', todoController.create)
 router.patch('/todos', todoController.updatePatch)
 router.delete('/todos', todoController.delete)
 router.put('/todos', todoController.update)
-
-//todo
+router.post('/projects', projectController.create)
 
 
 module.exports = router

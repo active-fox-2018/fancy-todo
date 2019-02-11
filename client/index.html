@@ -436,7 +436,6 @@
 
   //first-time load data user
   function authentication() {
-    
     if(localStorage.getItem('token') && localStorage.getItem('id')) {
       $.ajax({
         type: "GET",
@@ -501,7 +500,8 @@
       url: 'http://localhost:3000/todos',
       data: {
         status : status,
-        id : id
+        id : id,
+        user : localStorage.getItem('id')
       }
       })
       .done(data => {
@@ -565,6 +565,7 @@
     dangerMode: true,
   })
   .then((willDelete) => {
+    // console.log(localStorage.getItem('id'))
     if (willDelete) {
       $.ajax({
         type: "DELETE",
@@ -573,7 +574,8 @@
         },
         url: 'http://localhost:3000/todos',
         data: {
-          id : id
+          id : id,
+          user : localStorage.getItem('id')
         }
         })
         .done(data => {
@@ -658,6 +660,7 @@
     $('.title.banner').append(`<p>HELLO, ${username} </p>`)
     $.get('http://localhost:3000/weather')
     .done(data => {
+      // $('.title.banner').empty()
       console.log(data)
       $('.weather').empty()
       if(data.weather[0].main == 'Clouds') {
@@ -665,12 +668,17 @@
         <image src = "http://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/256/Status-weather-clouds-icon.png" alt = "">
           <p>${data.weather[0].description}</p>
           `)
-      } else {
-        $('.title.banner').append(`<p>HELLO, ${username} </p>`)
-        $('.title.banner').append(`<br>
-        <image is-64x64 src = "https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwjQkdyNq7LgAhXEgI8KHUqzCJsQjRx6BAgBEAU&url=http%3A%2F%2Fpngimages.net%2Frain-png-image-28&psig=AOvVaw07H0D3FX_4TaHZRsHrUFOX&ust=1549928291250795" alt = "">
+      } else if(data.weather[0].main == "Rain") {
+        $('.weather').append(`<br>
+        <image src = "http://files.softicons.com/download/web-icons/vector-stylish-weather-icons-by-bartosz-kaszubowski/ico/cloud.rain.ico" alt = "">
+          <p>${data.weather[0].description}</p>
           `)
-      }
+      } else {
+        $('.weather').append(`<br>
+        <image src = "https://www2.gtel.net/wp-content/uploads/2017/10/weather-icon-png-5.png" alt = "">
+          <p>${data.weather[0].description}</p>
+          `)
+      }    
     })
     .fail(err => {
       console.log(err)

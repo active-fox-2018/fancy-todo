@@ -11,7 +11,6 @@ class TodoController {
       users : req.body.id
     })
     .then(todo => {
-      console.log('CREATE')
       res.status(201).json(todo)
     })
     .catch(err => {
@@ -46,7 +45,6 @@ class TodoController {
       new : true
     })
     .then((data) => {
-      console.log('====')
       if(data != null) {
       res.status(200).json(data)
       } else {
@@ -101,5 +99,7 @@ class TodoController {
     })
   }
 }
+
+
 
 module.exports = TodoController

@@ -10,7 +10,8 @@ const todoSchema = new Schema({
     enum : ['complete', 'uncomplete']
   },
   due_date : Date,
-  users : [{ type : Schema.Types.ObjectId, ref : 'User'}]
+  users : [{ type : Schema.Types.ObjectId, ref : 'User'}],
+  project : [{ type : Schema.Types.ObjectId, ref : 'Project'}]
   })
 
 
