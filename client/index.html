@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="google-signin-client_id" content="381474162119-8ltjkr6dl2g3qvm2q8tfp5sqopoo5646.apps.googleusercontent.com">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Kaushan+Script" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="./css/index.css">
+    <title>O-Todos</title>
+  </head>
+  <body>
+    <div id="loginRegister" class="container" style="padding-top:4.2rem; padding-bottom:4.2rem;">
+      <div class="row">
+        <div class="col-md-5 mx-auto">
+          <div id="first">
+            <div class="myform form ">
+              <div class="logo mb-3">
+                <div class="col-md-12 text-center">
+                  <h1>Login</h1>
+                </div>
+              </div>
+              <form action="" method="post" name="login">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Email address</label>
+                  <input type="email" name="email"  class="form-control" id="emailLogin" aria-describedby="emailHelp" placeholder="Enter email">
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Password</label>
+                  <input type="password" name="password" id="passwordLogin"  class="form-control" aria-describedby="emailHelp" placeholder="Enter Password">
+                </div>
+                <br>
+                <div class="col-md-12 text-center ">
+                  <button type="submit" class=" btn btn-block mybtn btn-primary tx-tfm">Login</button>
+                </div>
+                <div class="col-md-12 ">
+                  <div class="login-or">
+                    <hr class="hr-or">
+                    <span class="span-or">or</span>
+                  </div>
+                </div>
+                <div class="col-md-12 mb-3">
+                  <div class="text-center">
+                    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <p class="text-center">Don't have account? <a href="#" id="signup">Sign up here</a></p>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div id="second">
+            <div class="myform form ">
+              <div class="logo mb-3">
+                  <div class="col-md-12 text-center">
+                      <h1 >Signup</h1>
+                  </div>
+              </div>
+              <form action="#" name="registration">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Full Name</label>
+                  <input type="text"  name="fullname" class="form-control" id="fullname" aria-describedby="emailHelp" placeholder="Enter Fullname">
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Email address</label>
+                  <input type="email" name="email"  class="form-control" id="emailRegister" aria-describedby="emailHelp" placeholder="Enter email">
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Password</label>
+                  <input type="password" name="password" id="passwordRegister"  class="form-control" aria-describedby="emailHelp" placeholder="Enter Password">
+                </div>
+                <div class="col-md-12 text-center mb-3">
+                  <button type="submit" class=" btn btn-block mybtn btn-primary tx-tfm">Register</button>
+                </div>
+                <div class="col-md-12 ">
+                  <div class="form-group">
+                    <p class="text-center"><a href="#" id="signin">Already have an account?</a></p>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="mainPage">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#" style="font-family: 'Kaushan Script', cursive;"><h4>O-Todos</h4></a>
+      </nav>
+
+      <div id="content" class="container-fluid">
+
+        <!-- MY TODOS -->
+        <div class="row">
+          <!-- TODOS -->
+          <div class="col-sm-8">
+            <button type="button" class="btn btn-primary btn-sm mx-3 mt-3" onclick="createTodo()" data-toggle="modal" data-target="#todoForm">+ Create new todo</button>
+            <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Launch demo modal</button> -->
+            <div id="myTodos"></div>
+          </div>
+          <!-- PROJECTS -->
+          <div class="col-sm-4">
+            <div class="card my-3">
+              <h5 class="card-header" style="font-family: 'Kaushan Script', cursive;">My projects</h5>
+              <div class="card-body">
+                <ul id="myProjects">
+
+                </ul>
+                <button type="button" class="btn btn-primary mx-1" onclick="createProject()" data-toggle="modal" data-target="#projectForm">Create new project</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MODAL -->
+        <div class="modal fade" id="todoForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" style="font-family: 'Kaushan Script', cursive;">Create New Todo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <form method="POST" name="todoForm">
+                <div class="modal-body">
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Name</label>
+                    <input type="text" name="todoName" class="form-control" id="todoName" aria-describedby="emailHelp" placeholder="Enter name">
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Description</label>
+                    <input type="text" name="todoDescription" class="form-control" id="todoDescription" aria-describedby="emailHelp" placeholder="Enter escription">
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Due Date</label>
+                    <input type="date" name="todoDueDate" class="form-control" id="todoDueDate" aria-describedby="emailHelp" placeholder="Enter due date" required>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary">Add</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal fade" id="projectForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" style="font-family: 'Kaushan Script', cursive;">Create New Project</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <form method="POST" name="projectForm">
+                <div class="modal-body">
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Name</label>
+                    <input type="text" name="todoName" class="form-control" id="projectName" aria-describedby="emailHelp" placeholder="Enter project name" required>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary">Add</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROJECT DETAIL -->
+        <div id="myProjectDetail" class="row">
+          <!-- PROJECTS TODO -->
+          <div class="col-sm-8">
+            <button type="button" class="btn btn-primary btn-sm mx-3 mt-3" onclick="createProjectTodo()" data-toggle="modal" data-target="#todoForm">+ Create new todo</button>
+            <div class="card mx-3 my-3">
+              <div class="card-header" style="font-family: 'Kaushan Script', cursive;">TODOS name</div>
+              <div class="card-body">
+                <p class="card-text">Todos Description .....</p>
+                <div class=" text-right">
+                  <button type="button" class="btn btn-primary btn-sm mx-1">edit</button>
+                  <button type="button" class="btn btn-danger btn-sm mx-1">delete</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- PROJECTS MEMBER -->
+          <div class="col-sm-4">
+            <div class="card my-3">
+              <h5 class="card-header" style="font-family: 'Kaushan Script', cursive;">Members:</h5>
+              <div class="card-body">
+                <ul>
+                  <li>member 1</li>
+                  <li>member 2</li>
+                  <li>member 3</li>
+                  <li>member 4</li>
+                  <li>member 5</li>
+                </ul>
+                <button type="button" class="btn btn-primary mx-1">Invite new member</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.15.1/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="./js/index.js"></script>
+  </body>
+</html>
