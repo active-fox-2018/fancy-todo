@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -173,6 +173,54 @@
     </div>
   </div>
 
+  <!-- Add Project Form -->
+  <div class="modal fade" id="exampleModal5" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel5"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel4">Create A Project</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="AddProjectForm">
+            <h6 id="AddProjectError"></h6>
+            <div class="form-group input-group">
+              <label for="project-name" class="col-form-label">Project Name <i
+                  class="fas fa-file-signature"></i></label>
+              <input type="text" class="form-control rounded ml-2" id="project-name">
+            </div>
+            <!-- add task date-picker -->
+            <div class="form-group input-group date" data-provide="datepicker"><br>
+              <label for="due-date3" class="col-form-label">
+                <div class="input-group-addon">
+                  Due Date <i class="far fa-calendar-alt"></i>
+                </div>
+              </label>
+              <input type="text" class="form-control rounded ml-4" id="due-date3">
+
+            </div>
+            <hr>
+
+
+            <div class="form-group">
+              <label for="description3" class="col-form-label">Details</label>
+              <textarea type="password" class="form-control" id="description3"></textarea>
+            </div>
+
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit button" class="btn btn-primary">Create Project</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- auth -->
   <div id="auth" class="container-fluid bg-info vh-100 ">
     <div class="d-flex justify-content-center">
@@ -265,18 +313,8 @@
 
         <!-- projects sidebar -->
         <div id="projects-sidebar">
-          <nav class="nav flex-column nav-pills" role="tablist">
-            <a class="nav-link active" data-toggle="pill" onclick="getAllProjectTodo('All Task')" href="#"><i class="fas fa-list-ul" style="color: green;"></i> All Task</a>
-            <a class="nav-link" data-toggle="pill" href="#"><i class="fas fa-calendar-day" style="color: rgb(206, 77, 60);"></i>
-              Today</a>
-            <a class="nav-link" data-toggle="pill" href="#"><i class="far fa-star" style="color: rgb(250, 214, 54);"></i> Starred</a>
-            <div>
-              <hr>
-            </div>
-            <a class="nav-link" data-toggle="pill" href="#">+Add Projects</a>
-            <a class="nav-link" data-toggle="pill" href="#"><i class="fas fa-project-diagram" style="color: rgb(252, 99, 79);"></i>
-              Sample
-              Project</a>
+          <nav class="nav flex-column nav-pills" role="tablist" id="nav-projects">
+
           </nav>
         </div>
 

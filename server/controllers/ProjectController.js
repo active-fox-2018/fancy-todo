@@ -44,6 +44,7 @@ class ProjectController {
     Project
       .find(query)
       .populate("users")
+      .populate("todos")
       .then(projects => {
         if (!projects.length) {
           res

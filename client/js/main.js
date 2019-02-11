@@ -24,6 +24,7 @@ function getSideBar(todoType) {
     $('#projects-sidebar').show()
     $('#personal-sidebar').hide()
     getAllProjectTodo('All Task')
+    getProjectList()
   }
 }
 

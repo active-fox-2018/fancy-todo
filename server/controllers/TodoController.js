@@ -4,14 +4,19 @@ const Project = require('../models/Project')
 class TodoController {
 
   static create(req, res) {
+    var body = {
+      name: req.body.name,
+      description: req.body.description,
+      due_date: req.body.due_date,
+      users: req.user._id,
+    }
+
+    if(req.body.project){
+      body.project = req.body.project
+    }
+
     Todo
-      .create({
-        name: req.body.name,
-        description: req.body.description,
-        due_date: req.body.due_date,
-        users: req.user._id,
-        project: req.body.project
-      })
+      .create(body)
       .then(todo => {
         if (req.body.project) {
           return Project
@@ -166,14 +171,20 @@ class TodoController {
           if(todo.project){
             return Project
               .findById(todo.project)
-              .then()
+              .then(project => {
+                project.todos = project.todos.filter(e => e==todo._id)
+                return project.save()
+              })
+              .then(updatedProject => {
+                res
+                .status(200)
+                .json({
+                  msg: "delete success",
+                  todo,
+                  updatedProject
+                })
+              })
           }
-          res
-            .status(200)
-            .json({
-              msg: "delete success",
-              data: todo
-            })
         }
       })
       .catch(err => {

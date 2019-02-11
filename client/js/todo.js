@@ -23,7 +23,6 @@ $('#AddTaskForm').submit((event) => {
       console.log(err.responseJSON.msg)
       $('#AddTaskError').html(`<h6 style="color:red;">${err.responseJSON.msg}</h6>`)
     })
-
 })
 
 function getList(data, tagName) {
