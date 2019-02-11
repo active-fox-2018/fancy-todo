@@ -5,7 +5,7 @@ const todoController = require('../controllers/todoController')
 const authentication = require('../middlewares/authentication')
 const authorization = require('../middlewares/authorization')
 const projectController = require('../controllers/projectController')
-//user
+
 
 router.post('/users', userController.create)
 router.post('/users/login', userController.loginManual)
