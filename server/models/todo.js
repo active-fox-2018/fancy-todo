@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const User = require('./user')
 
 const todoSchema = new Schema({
     name: {
@@ -10,27 +9,19 @@ const todoSchema = new Schema({
     description: {
         type: String,
     },
+    status: {
+        type: String,
+        default: 'unchecked'
+    },
+    due_date: {
+        type: Date,
+        required: true
+    },
     user: {
         type: Schema.Types.ObjectId,
         ref: 'User'
     }
   })
-
-//hook untuk tambahin todo ke user
-// todoSchema.pre('save', function(next) {
-//     User.findOne({
-//         _id: this.user
-//     })
-//     .then(user => {
-//         user.todos.push(this._id)
-//         console.log(user)
-//         user.save()
-//     })
-//     .catch(err => {
-//         console.log(err)
-//     })
-//     next()
-// })
 
 const Todo = mongoose.model('Todo', todoSchema)
 

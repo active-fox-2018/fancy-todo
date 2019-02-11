@@ -50,7 +50,6 @@ class Controller {
                 audience: process.env.CLIENT_ID
             })
             .then(ticket => {
-                // console.log(ticket)
                 const payload = ticket.getPayload()
                 userData = payload
                 return User.findOne({
@@ -141,7 +140,44 @@ class Controller {
                 })            
         })
     }
-}
 
+    static getProjects(req, res) {
+        User.findById(req.params.id)
+        .populate('projects')
+        .then(user => {
+            res.json(user.projects)
+        })
+        .catch(err => {
+            console.log(err)
+            res
+                .status(500)
+                .json({
+                    msg: `Internal Server Error`,
+                    err: err
+                })            
+        })
+    }
+
+    //masi error
+    static allUsers(req, res) {
+        User.find({})
+        .then(users => {
+            res
+            .status(200)
+            .json({
+                users: users
+            })
+        })
+        .catch(err => {
+            console.log(err)
+            res
+                .status(500)
+                .json({
+                    msg: `Internal Server Error`,
+                    err: err
+                })     
+        })
+    }
+}
 
 module.exports = Controller

@@ -19,23 +19,25 @@ const userSchema = new Schema({
         //   },{
         //     isAsync : true,
         //     validator : (value, callback) => {
-        //       User
-        //         .findOne({
-        //           email: value
-        //         })
-        //         .then(member => {
-        //           if (member) {
-        //             callback(false)
-        //           } else {
-        //             callback(true)
-        //           }
-        //         })
-        //         .catch(err => {
-        //           console.log('email error: ', err)
-        //         })
-        //     },
-        //     message: "this email is already used"
-        //   }],
+        //       console.log(value, '=======')
+        //       console.log('this', this)
+              // User
+              //   .findOne({
+              //     email: value
+              //   })
+              //   .then(member => {
+              //     if (member) {
+              //       callback(false)
+              //     } else {
+              //       callback(true)
+              //     }
+              //   })
+              //   .catch(err => {
+              //     console.log('email error: ', err)
+              //   })
+            // },
+            // message: "this email is already used"
+          // }],
         trim: true
     },
     password: {
@@ -46,6 +48,10 @@ const userSchema = new Schema({
     todos: [{
         type: Schema.Types.ObjectId,
         ref: 'Todo'
+    }],
+    projects: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Project'
     }]
 });
 

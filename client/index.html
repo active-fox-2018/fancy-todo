@@ -1,81 +1,114 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Fancy Todo</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" media="screen" href="style.css">
-    <meta name="google-signin-client_id" content="1044222864150-j6i5dsrch11cddpg7jic43rfeq4jg5qe.apps.googleusercontent.com">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Fancy Todo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+    integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" media="screen" href="style.css">
+  <meta name="google-signin-client_id"
+    content="1044222864150-j6i5dsrch11cddpg7jic43rfeq4jg5qe.apps.googleusercontent.com">
 </head>
+
 <body>
   <!-- navbar -->
-        <nav id="navbarTogether" class="navbar navbar-expand-lg navbar-dark bg-primary">
-                <a class="navbar-brand" href="#">Navbar</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                  <span class="navbar-toggler-icon"></span>
-                </button>
-              
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                  <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                      <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="#">Link</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Dropdown
-                      </a>
-                      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                      </div>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                    </li>
-                  </ul>
-                  <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                  </form>
-                  <a href="#" onclick="signOut();">Sign out</a>
-                </div>
-              </nav>
+  <nav id="navbarTogether" class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="#">Fancy Todo</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" href="#" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" onclick="homepage()">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-  <!-- <h1>CLIENT SIDE FANCY TODO</h1> -->
-  <button onclick="fetchTodos()">All Todos</button>
-  <!-- <div id="listtodo" onclick="fetchTodos()">All Todos</div> -->
-  <form id="addNewTodo">
-    Name:
-    <input type="text" placeholder="Write new todo" id="todo"> <br>
-    Description:
-    <input type="text" placeholder="(Optional)" id="desc"> <br>
-    <button type="submit">Add Todo</button>
-  </form>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#" onclick="homepage()">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="#" onclick="fetchTodos()">My Todos</a>
+        </li>
+        <li class="nav-item active">
+            <a class="nav-link" href="#" onclick="fetchProjects()">My Projects</a>
+          </li>
+        <li class="nav-item">
+          <div id="gSignIn" class="g-signin2" data-onsuccess="onSignIn"></div>
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+      <a href="#" id="logout_button" onclick="signOut();" style="color:aliceblue; margin-left: 10px">Sign out</a>
+    </div>
+  </nav>
 
-  <!-- signup form -->
-    <div id="signup_form" >
+  <!-- homepage -->
+  <div id="home">
+    <div class="jumbotron">
+      <br>
+      <br>
+      <br>
+      <a class="btn btn-primary btn-lg sign" href="#" onclick="signUp()" role="button">Sign Up</a> or <a
+        class="btn btn-primary btn-lg sign" href="#" role="button" onclick="loginPage()">Sign In</a><br>
+      <br>
+      <br>
+      </p>
+    </div>
+
+    <!-- ALL TODOS -->
+    <div id="allTodos">
+      <h1 id="textTodos">All Todos</h1>
+      <table width="75%" border="3px">
+        <thead>
+          <th>Status</th>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Due Date</th>
+          <th>Action</th>
+        </thead>
+        <tbody id="todos"></tbody>
+      </table>
+      <br>
+      <br>
+      <button type="button" class="btn btn-primary btn-lg btn-block" href="#" onclick="showFormAddTodo()">Add New Todo</button>
+      <br>
+      <hr>
+      <form id="addNewTodo">
+        Name:
+        <input type="text" placeholder="Write new todo" id="todo"> <br>
+        Description:
+        <input type="text" placeholder="(Optional)" id="desc"> <br>
+        Due Date:
+        <input type="date" id="due_date"> <br>
+        <button type="submit">Add Todo</button>
+      </form>
+    </div>
+
+    <!-- POPULATE DATA AND EDIT TODO -->
+    <div id="edit-todo"></div>
+
+    <!-- signup form -->
+    <div id="signup_form">
       Sign Up Form
       <form id="signup_data">
         <div class="form-group">
-            <label for="exampleInputEmail1">Full Name</label>
-            <input type="text" class="form-control" mail1 aria-describedby="emailHelp" placeholder="Enter Full Name" id="fullname_signup">
-            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+          <label for="exampleInputEmail1">Full Name</label>
+          <input type="text" class="form-control" mail1 aria-describedby="emailHelp" placeholder="Enter Full Name"
+            id="fullname_signup">
+          <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
         </div>
         <div class="form-group">
           <label for="exampleInputEmail1">Email address</label>
-          <input type="email" class="form-control"  aria-describedby="emailHelp" placeholder="Enter email" id="email_signup">
+          <input type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter email"
+            id="email_signup">
           <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
         </div>
         <div class="form-group">
           <label for="exampleInputPassword1">Password</label>
-          <input type="password" class="form-control"  placeholder="Password" id="pass_signup">
+          <input type="password" class="form-control" placeholder="Password" id="pass_signup">
         </div>
         <div class="form-group form-check">
           <input type="checkbox" class="form-check-input">
@@ -86,67 +119,137 @@
     </div>
     <br>
     <br>
+
     <!-- login form -->
     <div id="signInButton">
-        Sign In with Google
-        <div id="gSignIn" class="g-signin2" data-onsuccess="onSignIn"></div>
+      <!-- Sign In with Google -->
+      <div id="gSignIn" class="g-signin2" data-onsuccess="onSignIn"></div>
     </div> <br>
 
     <div id="login_form">
-        Login Form
-        <form id="login_data" action="post">
+      <!-- Login Form -->
+      <form id="login_data" action="post">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Email address</label>
+          <input type="email" class="form-control" id="email_login" aria-describedby="emailHelp"
+            placeholder="Enter email">
+          <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Password</label>
+          <input type="password" id="pass_login" class="form-control" placeholder="Password">
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+      </form>
+    </div>
+
+    <div id="addProject">
+       <h2 style="text-align:center">Create New Project</h2>
+        <form id="newProject-data">
           <div class="form-group">
-            <label for="exampleInputEmail1">Email address</label>
-            <input type="email" class="form-control" id="email_login" aria-describedby="emailHelp" placeholder="Enter email">
-            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            <!-- dropdown all users -->
+            <label>Select contributors</label>
+            <div class="dropdown">
+                <input type="checkbox" name="Ahmad Syukron" value="user1"> Ahmad Syukron<br>
+                <input type="checkbox" name="Mahdi Haris" value="user2"> Mahdi Haris<br>
+                <input type="checkbox" name="Dewi" value="user3"> Dewi<br>
+            </div>
+            <!-- <label for="exampleInputEmail1">Select contributors</label>
+            <input type="text" class="form-control" id="contributors_project"
+              placeholder="Choose contributors"> -->
           </div>
           <div class="form-group">
-            <label for="exampleInputPassword1">Password</label>
-            <input type="password" id="pass_login" class="form-control"  placeholder="Password">
+              <label>Project Name</label>
+              <input type="text" id="name_project" class="form-control" placeholder="Write project name">
+            </div>
+          <div class="form-group">
+            <label>Todo</label>
+            <input type="text" id="todo_project" class="form-control" placeholder="Write a todo">
           </div>
-          <button type="submit" class="btn btn-primary">Login</button>
+          <button type="submit" class="btn btn-primary">Add Project</button>
         </form>
+      </div> 
+
+      <div id="allProjects" style="margin: 0 auto; text-align: center">
+        <br>
+        <br>
+        <br>
+        <h1>All Projects</h1>
+        <table width="50%" border="2px">
+          <thead>
+            <th>Project Name</th>
+            <th>Member</th>
+          </thead>
+          <tbody>
+            <tr id="eachProject">
+              <td id="project_name_"></td>
+              <td>
+                <ul id="project_member_"></ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- <ul id="eachProject"></ul> -->
       </div>
+  </div>
 
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
-    <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-    <script src="todo.js"></script>
-    <script>
-      $('#signup_form').hide()
-      $('#login_form').hide()
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+  <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+    integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+    integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+    crossorigin="anonymous"></script>
+  <script src="todo.js"></script>
+  <script src="project.js"></script>
+  <script>
+    $('.jumbotron').show()
+    $('#buttonAllTodos').hide()
+    $('#addNewTodo').hide()
+    $('#edit-todo').hide()
+    $('#signInButton').hide()
+    $('#login_data').hide()
+    $('#signup_form').hide()
+    $('#allTodos').hide()
+    $('#addProject').hide()
+    $('#allProjects').hide()
 
-      if (!localStorage.getItem('token')) {
-        swal("Authentication Failed", "You have to login first");
-      } else {
-        $.post('http://localhost:3000/verify', { token: localStorage.getItem('token') })
+    if (!localStorage.getItem('token')) {
+      $('#logout_button').hide()
+      swal("Authentication Failed", "You have to login first");
+    } else {
+      $.post('http://localhost:3000/verify', { token: localStorage.getItem('token') })
         .done(response => {
-          // console.log(response)
           if (response.msg === 'Token Invalid') {
             swal("Authentication Failed", "Token Invalid!", "error");
           }
+          $('#gSignIn').hide()
+          $('#logout_button').show()
         })
         .fail(err => {
           console.log(err)
         })
-      }
+    }
 
-      $('#signup_data').submit(function (event) {
-        event.preventDefault()
-        $.post('http://localhost:3000/signup', {
-          full_name: $('#fullname_signup').val(),
-          email: $('#email_signup').val(),
-          password: $('#pass_signup').val(),
-          todos: []
-        })
+    $('#signup_data').submit(function (event) {
+      event.preventDefault()
+      console.log($('#fullname_signup').val())
+      $.post('http://localhost:3000/signup', {
+        full_name: $('#fullname_signup').val(),
+        email: $('#email_signup').val(),
+        password: $('#pass_signup').val(),
+        todos: []
+      })
         .done(response => {
           if (localStorage.getItem('token')) {
             swal("Sign Up Forbidden", "You have to logout first", "error");
           } else {
             localStorage.setItem('token', response)
+            console.log(response)
+            $('#gSignIn').show()
           }
         })
         .fail(err => {
@@ -156,43 +259,84 @@
           else modelValidation = 'password'
           swal("Validation Failed", `${err.responseJSON.err.errors[`${modelValidation}`].message}`, "error");
         })
-      })
+    })
 
-      $('#login_form').submit(function (event) {
-        event.preventDefault()
-        $.post('http://localhost:3000/', {
-          email: $('#email_login').val(),
-          password: $('#pass_login').val()
-        })
+    $('#login_form').submit(function (event) {
+      event.preventDefault()
+      $.post('http://localhost:3000/', {
+        email: $('#email_login').val(),
+        password: $('#pass_login').val()
+      })
         .done(response => {
           localStorage.setItem('token', response)
+          homepage()
         })
         .fail(err => {
           swal("Validation Failed", `${err.responseJSON.msg}`, "error");
         })
+    })
+
+  function onSignIn(googleUser) {
+    const id_token = googleUser.getAuthResponse().id_token
+    $.post('http://localhost:3000/', { token: id_token })
+      .done(response => {
+        localStorage.setItem('token', response)
+        $('#gSignIn').hide()
       })
+      .fail(err => {
+        console.log(err)
+      })
+  }
 
-      function onSignIn(googleUser) {
-        const id_token = googleUser.getAuthResponse().id_token
-        $.post('http://localhost:3000/', { token: id_token })
-        .done(response => {
-          localStorage.setItem('token', response)
-        })
-        .fail(err => {
-          console.log(err)
-        })
-      }
-
-      function signOut() {
-        var auth2 = gapi.auth2.getAuthInstance();
-        auth2.signOut()
+  function signOut() {
+      var auth2 = gapi.auth2.getAuthInstance();
+      auth2.signOut()
         .then(function () {
+          homepage()
           localStorage.removeItem('token')
           swal("User signed out.");
           console.log('User signed out.');
         });
-      }
-    
-    </script>
+    }
+
+  function homepage() {
+    $('.jumbotron').show()
+    $('#buttonAllTodos').hide()
+    $('#addNewTodo').hide()
+    $('#edit-todo').hide()
+    $('#signInButton').hide()
+    $('#login_data').hide()
+    $('#signup_form').hide()
+    $('#allTodos').hide()
+    $('#addProject').hide()
+    $('#allProjects').hide()
+  }
+
+  function loginPage() {
+    $('.jumbotron').hide()
+    $('#buttonAllTodos').hide()
+    $('#addNewTodo').hide()
+    $('#edit-todo').hide()
+    $('#signInButton').hide()
+    $('#login_data').show()
+    $('#signup_form').hide()
+    $('#addProject').hide()
+    $('#allProjects').hide()
+  }
+
+  function signUp() {
+    $('#signup_form').show()
+    $('.jumbotron').hide()
+    $('#buttonAllTodos').hide()
+    $('#addNewTodo').hide()
+    $('#edit-todo').hide()
+    $('#signInButton').hide()
+    $('#gSignIn').hide()
+    $('#login_data').hide()
+    $('#addProject').hide()
+    $('#allProjects').hide()
+  }
+  </script>
 </body>
+
 </html>

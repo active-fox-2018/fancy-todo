@@ -1,8 +1,10 @@
 const router = require('express').Router()
 const users = require('./users')
-const todo = require('./todos')
+const todos = require('./todos')
+const projects = require('./projects')
 
 router.use('/', users)
-router.use('/todos', todo)
+router.use('/todos', todos)
+router.use('/projects', projects)
 
 module.exports = router

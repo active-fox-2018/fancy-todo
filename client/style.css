@@ -1,10 +1,52 @@
 #signup_form {
-    /* margin-left: 20px; */
+    margin-left: 20px;
     margin: 0 75px;
     padding-left: 25px;
-}
+} 
 
 #login_form {
     margin: 0 75px;
     padding-left: 25px;
+}
+
+.jumbotron {
+    text-align: center;
+    margin: auto;
+    background-image: url('https://imgur.com/VEoSQFP.png');
+    background-repeat: no-repeat;
+    background-size: 1100px 800px;
+    background-size: cover;
+    padding-top: 25%;
+    padding-bottom: 23%;
+}
+
+.jumbo {
+    color: white;
+}
+
+.sign {
+    color: white;
+    background-color: #1aba97
+}
+
+.sign:hover {
+    color: blue;
+    background-color: greenyellow
+}
+
+#addNewTodo, table, #edit-todo{
+    margin: auto;
+    text-align: center;
+}
+
+table {
+    margin-top: 5%;
+}
+
+th, tr {
+    text-align: center;
+}
+
+#textTodos {
+    text-align: center;
 }
