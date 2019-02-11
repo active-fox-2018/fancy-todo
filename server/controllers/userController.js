@@ -55,11 +55,11 @@ module.exports = {
   login: (req, res) => {
     User
       .findOne({ email: req.body.email })
-      .then((result) => {
-        if (result) {
-          const decryptPW = decrypt(req.body.password, result.password);
+      .then((token) => {
+        if (token) {
+          const decryptPW = decrypt(req.body.password, token.password);
           if (decryptPW) {
-            let getToken = jwt.sign({ result }, process.env.SECRET);
+            let getToken = jwt.sign({ token }, process.env.SECRET);
             res.status(200).json(getToken);
           } else {
             res.status(404).json({ message: 'Wrong Password!' });

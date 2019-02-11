@@ -11,9 +11,8 @@ routes.get('/', function (req, res) {
 routes.post('/verify_account', gLogin);
 routes.post('/sign_up', createUser);
 routes.post('/login', login);
-routes.post('/verify_login', verifyLogin);
 
-//Todo Routes
+//Task Routes
 routes.post('/tasks', verifyLogin, createTask);
 routes.get('/tasks', verifyLogin, readTask);
 routes.put('/tasks', verifyLogin, updateTask);
