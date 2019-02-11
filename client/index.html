@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <title>Todo Fancy</title>
+  </head>
+
+<body>
+
+<!-- form login -->
+  <div class="container my-3" id="login">
+      <div class="row">
+          <div class="col-12 p-0 text-center">
+  
+              <h6>
+                  Don't have account?
+                  <a onclick="register()"> Register </a>
+              </h6>
+
+              <div class="row">
+                  <div class="col-md-4 mx-auto">
+                      <div>
+
+                          <div class="form-group">
+                              <label for="exampleInputEmail1" class="text-left">Email address</label>
+                              <input type="email" class="form-control" aria-describedby="emailHelp" aria-describedby="emailHelp" placeholder="Enter your email" id="login_email">
+                          </div>
+
+                          <div class="form-group">
+                              <label for="exampleInputEmail1">Password</label>
+                              <input type="password" class="form-control" aria-describedby="emailHelp" placeholder="Enter your password" id="login_password">
+                          </div>
+
+                          <button type="submit" class="btn btn-primary btn-md" onclick="submitLogin()" >Log In</button>
+                          |
+                          <button type="button" class="btn btn-secondary btn-md">Google</button>
+
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+<!-- form login -->
+
+<!-- register -->
+  <div class="container my-3" id="register">
+      <div class="row">
+          <div class="col-12 p-0 text-center">
+
+              <h5 class="font-weight-light mb-3">Registration</h5>
+              <div class="row">
+                  <div class="col-md-4 mx-auto">
+                      <div>
+
+                          <div id="register_notification"></div>
+
+                          <div class="form-group">
+                              <label for="exampleInputEmail1" class="text-left">Name</label>
+                              <input type="text" class="form-control" aria-describedby="emailHelp" placeholder="Enter your name" id="register_name">
+                          </div>
+
+                          <div class="form-group">
+                              <label for="exampleInputEmail1" class="text-left">Email address</label>
+                              <input type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter your email" id="register_email">
+                          </div>
+
+                          <div class="form-group">
+                              <label for="exampleInputEmail1">Password</label>
+                              <input type="password" class="form-control" aria-describedby="emailHelp" placeholder="Enter your password" id="register_password">
+                          </div>
+
+                          <button type="submit" class="btn btn-primary btn-block" onclick="submitRegister()">
+                            Register
+                          </button>
+
+                      </div>
+                      <br>
+
+                      Already have an account? <a onclick="login()" return false>Log In</a>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+<!-- register -->
+
+<!-- navbar -->
+  <div id="navbar">
+      <nav class="navbar navbar-expand-lg navbar-light bg-primary" style="color:aliceblue">
+          <a class="navbar-brand" onclick="">Just Todo</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav mr-auto">
+              </ul>
+              <button class="btn btn-outline-light my-2 my-sm-0" type="submit"  onclick="" style="color:aliceblue">Log Out</button>
+          </div>
+
+      </nav>
+  </div>
+<!-- navbar -->
+
+<!-- content -->
+<div id="user">
+  <h2>Ini todo</h2>
+  
+  <form id="createTodo">
+    Name:<br>
+    <input type="text" name="name" id="name">
+    <br>
+    Description:<br>
+    <input type="text" name="description" id="description">
+    <br>
+    Status:<br>
+    <input type="text" name="status" id="status">
+    <br>
+    Due Date:<br>
+    <input type="date" name="due_date" id="due_date">
+    <br><br>
+    <input type="submit" value="Create">
+  </form>
+  
+</div>
+<!-- content -->
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+  
+  <script>
+    checkToken()
+
+    function checkToken() {
+      let token = localStorage.token
+      if (!token) {
+        $('#register').hide()
+        $('#navbar').hide()
+        $('#user').hide()
+      } else {
+        $('#login').hide()
+        $('#register').hide()
+        $('#navbar').show()
+        $('#user').show()
+        home()
+      }
+    } 
+
+    function login() {
+      $('#register').hide()
+      $('#login').show()
+    }
+
+    function register() {
+      $('#login').hide()
+      $('#register').show()
+    }
+
+    function submitLogin() {
+      $.ajax({
+          type: 'POST',
+          url: 'http://localhost:3000/login',
+          data: {
+              email: $('#login_email').val(),
+              password: $('#login_password').val()
+          }
+      })
+        .done(data => {
+            localStorage.setItem('token', data.token)
+            checkToken()
+        })
+        .fail((err) => {
+            console.log(err.responseJSON.message);
+        })
+    }
+    
+    function home() {
+      let token = localStorage.getItem('token')
+      $.get({
+        url: 'http://localhost:3000/todo',
+        headers: {
+          token: token
+        }
+      })
+        .done(data => {
+          console.log(data, 'ini data')
+        })
+        .fail(err => {
+          console.log(err, 'ini err')
+        })
+    }
+
+    function submitRegister() {
+        $.ajax({
+            type: 'POST',
+            url: 'http://localhost:3000/register',
+            data: {
+                name: $('#register_name').val(),
+                email: $('#register_email').val(),
+                password: $('#register_password').val()
+            }
+        })
+            .done(data => {
+              console.log('masuk register')
+              console.log(data,' ini data register')
+                $('#register_name').val('')
+                $('#register_email').val('')
+                $('#register_password').val('')
+            })
+            .fail(err => {
+              console.log(err, 'ini err')
+            })
+    }
+  </script>
+
+</body>
+
+</html>
