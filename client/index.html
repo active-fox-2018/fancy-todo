@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="google-signin-scope" content="profile email">
+  <meta name="google-signin-client_id"
+    content="949632417921-4pss515e12q0nor2rrpjkeld9qdtt8c2.apps.googleusercontent.com">
+  <title>Fancy Todo</title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
+  <!-- Bootstrap core CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Material Design Bootstrap -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.7.1/css/mdb.min.css" rel="stylesheet">
+  <link rel="stylesheet/less" type="text/css" href="style.scss">
+  <!-- Less Javascript -->
+  <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/3.9.0/less.min.js"></script>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+</head>
+
+<body>
+
+  <!--Navbar -->
+  <nav class="mb-1 navbar navbar-expand-lg navbar-dark bg-dark lighten-2">
+    <a class="navbar-brand" href=""><img src="./img/todos.png" width="150px"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-555"
+      aria-controls="navbarSupportedContent-555" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent-555">
+      <ul class="navbar-nav mr-auto" style="display: none">
+        <li class="nav-item active">
+          <a class="nav-link" href="">Home
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+      </ul>
+      <ul class="navbar-nav ml-auto nav-flex-icons">
+        <li class="nav-item avatar dropdown">
+          <a id="profileUser" class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false" style="display: none">
+            <img
+              src="https://lh5.googleusercontent.com/-Gasi2LJDHR8/AAAAAAAAAAI/AAAAAAAAAFQ/q_FOACNE9p0/s96-c/photo.jpg"
+              class="rounded-circle z-depth-0" alt="avatar image" height="35">
+          </a>
+          <div class="dropdown-menu dropdown-menu-right dropdown-secondary" aria-labelledby="navbarDropdownMenuLink-55">
+            <a class="dropdown-item signout" href="" onclick="signOut();">Logout</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <!--/.Navbar -->
+
+  <!-- Add Todo -->
+  <header>
+    <div class="container">
+      <div class="row">
+        <div class="col col-md-8">
+          <div class="todo">
+            <h1 style="margin-top: 6px">What do you want to do?</h1>
+            <a href="" class="btn btn-sm btn-elegant show-addTask">Create Task</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <!-- Add Todo -->
+
+  <!-- Main Content -->
+  <div class="container">
+    <div class="row mt-4">
+      <div class="col-md-8">
+        <!-- Form Signup/Signin -->
+        <div class="form-reg">
+          <div class="signup">Sign Up</div>
+          <div class="login">Log In</div>
+          <div class="signup-form">
+            <input type="text" placeholder="Your Full Name" class="input full_name"><br />
+            <input type="text" placeholder="Your Email Address" class="input email"><br />
+            <input type="password" placeholder="Choose a Password" class="input password"><br />
+            <button type="submit" class="btn btn-signup" onclick="register()">Create account</button>
+          </div>
+          <div class="login-form">
+            <input type="text" placeholder="Email" class="input email-login"><br />
+            <input type="password" placeholder="Password" class="input password-login"><br />
+            <div id="my-signin2"></div>
+            <div class="btn btn-signin" onclick="login()">Log in</div>
+          </div>
+        </div>
+        <!-- Form Signup/Signin -->
+
+        <!-- Todo List -->
+        <div class="list-group-item" style="display: none">
+          <div class="list-todos"></div>
+        </div>
+        <!-- Todo List -- >
+      </div>
+
+      <!--Modal: modalConfirmDelete-->
+        <div class="modal fade" id="modalConfirmDelete" tabindex="-1" role="dialog">
+          <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+            <!--Content-->
+            <div class="modal-content text-center">
+              <!--Header-->
+              <div class="modal-header d-flex justify-content-center">
+                <p class="heading">Are you sure?</p>
+              </div>
+
+              <!--Body-->
+              <div class="modal-body">
+
+                <i class="fas fa-times fa-4x animated rotateIn"></i>
+
+              </div>
+
+              <!--Footer-->
+              <div class="modal-footer flex-center">
+                <a href="" id="task_delete" class="btn  btn-outline-danger" data-dismiss="modal">Yes</a>
+                <a type="button" class="btn  btn-danger waves-effect" data-dismiss="modal">No</a>
+              </div>
+            </div>
+            <!--/.Content-->
+          </div>
+        </div>
+        <!--Modal: modalConfirmDelete-->
+
+        <!-- Create Task -->
+        <div class="modal fade" id="addTask" tabindex="-1" role="dialog">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Todo List</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <!-- <span aria-hidden="true">&times;</span> -->
+                </button>
+              </div>
+              <div class="validate">
+                <div id="success" class="alert alert-success" role="alert" style="display: none">
+                </div>
+                <div id="field" class="alert alert-warning" role="alert" style="display: none">
+                </div>
+                <div id="login" class="alert alert-danger" role="alert" style="display: none">
+                </div>
+              </div>
+              <div class="modal-body">
+                <form class="md-form">
+                  <input id="task" type="text" class="form-control" placeholder="Your Task">
+                  <textarea id="description" class="form-control" rows="2" placeholder="Descriptiion"></textarea>
+                  <input id="date" class="form-control" type="date">
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" id="submitForm" class="btn btn-primary">Create</button>
+                <button type="button" class="btn btn-secondary closeForm" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Update Task -->
+        <div class="modal fade" id="updateTask" tabindex="-1" role="dialog">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Update Todo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <!-- <span aria-hidden="true">&times;</span> -->
+                </button>
+              </div>
+              <div class="validate">
+                <div id="success_update" class="alert alert-success" role="alert" style="display: none">
+                </div>
+                <div id="field_update" class="alert alert-warning" role="alert" style="display: none">
+                </div>
+                <div id="login_update" class="alert alert-danger" role="alert" style="display: none">
+                </div>
+              </div>
+              <div class="modal-body">
+                <form class="md-form">
+                  <input id="title_update" type="text" class="form-control">
+                  <textarea id="description_update" class="form-control" rows="2"></textarea>
+                  <input id="date_update" class="form-control" type="date">
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" id="updateForm" class="btn btn-primary">Update</button>
+                <button type="button" class="btn btn-secondary closeForm" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- JQuery -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.2.1/js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.7.1/js/mdb.min.js"></script>
+    <!-- Google Javascript Library -->
+    <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+    <!-- Functional -->
+    <!-- <script src="./main.js"></script> -->
+    <script>
+
+      // $(document).ready(function() {
+      //   checkLogin();
+      // });
+
+      $(".login-form").hide();
+      $(".login").css("background", "none");
+
+      $(".login").click(function () {
+        $(".signup-form").hide();
+        $(".login-form").show();
+        $(".signup").css("background", "none");
+        $(".login").css("background", "#fff");
+      });
+
+      $(".signup").click(function () {
+        $(".signup-form").show();
+        $(".login-form").hide();
+        $(".login").css("background", "none");
+        $(".signup").css("background", "#fff");
+      });
+
+      $(".btn").click(function () {
+        $(".input").val("");
+      });
+
+      function onSuccess(googleUser) {
+        var profile = googleUser.getBasicProfile();
+        var id_token = googleUser.getAuthResponse().id_token;
+        $.post('http://localhost:3000/verify_account', { id_token })
+          .done(response => {
+            localStorage.setItem('token', response);
+            if (response) {
+              $('.form-reg').hide();
+              $('.list-group-item').show();
+              $('#profileUser').show();
+              readData();
+            }
+          })
+          .fail(error => {
+            console.log(error);
+          });
+      }
+      function onFailure(error) {
+        console.log(error);
+      }
+
+      function renderButton() {
+        gapi.signin2.render('my-signin2', {
+          'scope': 'profile email',
+          'width': 370,
+          'height': 42,
+          'longtitle': true,
+          'theme': 'dark',
+          'onsuccess': onSuccess,
+          'onfailure': onFailure
+        });
+
+      }
+
+      function signOut() {
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function () {
+          localStorage.clear();
+          $('#profileUser').hide();
+          $('.form-reg').show();
+          $('.list-group-item').hide();
+          $('.list-group-item').empty();
+          $('#task').val('');
+          $('#description').val('');
+          $('date').val('');
+        });
+      }
+
+
+      // function checkLogin() {
+      //   let token = localStorage.getItem('token');
+      //   $.ajax({
+      //     url: 'http://localhost:3000/verify_account',
+      //     type: 'POST',
+      //     headers: {
+      //       token: token
+      //     }
+      //   })
+      //     .done(response => {
+      //       console.log(response ,' abis login ');
+      //       if (response) {
+      //         $('.form-reg').hide();
+      //         $('.list-group-item').show();
+      //         $('#profileUser').show();
+      //         readData();
+      //       }
+      //     })
+      //     .fail(error => {
+      //       console.log(error);
+      //     });
+      // }
+
+      // Register User
+      function register() {
+        $.ajax({
+          method: 'POST',
+          url: 'http://localhost:3000/sign_up',
+          data: {
+            full_name: $('.full_name').val(),
+            email: $('.email').val(),
+            password: $('.password').val()
+          }
+        })
+          .done(response => {
+            console.log(response);
+          })
+          .fail(error => {
+            console.log(error);
+          })
+      }
+
+
+      // Login
+      function login() {
+        $.ajax({
+          url: 'http://localhost:3000/login',
+          method: 'POST',
+          data: {
+            email: $('.email-login').val(),
+            password: $('.password-login').val()
+          }
+        })
+          .done(response => {
+            localStorage.setItem('token', response);
+            $('.form-reg').hide();
+            $('.list-group-item').show();
+            $('#profileUser').show();
+            readData();
+
+          })
+          .fail(error => {
+            console.log(error);
+          })
+
+      }
+
+      // Create Todo
+      $('#submitForm').on('click', function (event) {
+        event.preventDefault();
+        $.ajax({
+          url: 'http://localhost:3000/tasks',
+          method: 'POST',
+          headers: { token: localStorage.getItem('token') },
+          data: {
+            title: $('#task').val(),
+            description: $('#description').val(),
+            due_date: $('#date').val()
+          }
+        })
+          .done(response => {
+            $('.list-group-item').append(`
+          <div class="list-todos mb-3">
+            <p id="todo_id" hidden>${response.task._id}</p>
+            <h4 class="list-group-item-title">${response.task.title}</h4>
+            <p class="list-group-item-text">${response.task.description}</p>
+            <p class="list-group-item-text due_date">Due date : ${response.task.due_date.slice(0, 10)}</p>
+            <div class="list-btn">
+              <a href="" class="btn btn-info btn-sm">
+                <i class="fas fa-check"></i>
+              </a>
+              <a href="" id="update-task" class="btn btn-default btn-sm" onclick="showTaskUpdate('${response.task._id}','${response.task.title}','${response.task.description}', '${response.task.due_date}')">
+                <i class="fas fa-edit"></i>
+              </a>
+              <a href="" class="btn btn-danger btn-sm delete-task" data-toggle="modal" data-target="#modalConfirmDelete" onclick="deleteTask('${response.task._id}')">
+                <i class="fas fa-times"></i>
+              </a>
+            </div>
+            </div>
+          `)
+            // after append
+            $('#task').val('');
+            $('#description').val('');
+            $('#date').val('');
+            $('#success').show().html(response.message);
+            $('#field').hide();
+            $('#login').hide();
+          })
+          .fail(error => {
+            // console.log(error);
+            if (error.status == 401) {
+              $('#login').show().html(`${error.responseJSON.message}`);
+              $('#task').val('');
+              $('#description').val('');
+              $('#date').val('');
+            } else {
+              $('#field').show().html(`${error.responseJSON.message}`);
+              $('#task').val('');
+              $('#description').val('');
+              $('#date').val('');
+            }
+          });
+      });
+
+      // Read Todo
+      function readData() {
+        $.ajax({
+          url: 'http://localhost:3000/tasks',
+          method: 'GET',
+          headers: { token: localStorage.getItem('token') }
+        })
+          .done(response => {
+            response.todos.forEach(todo => {
+              // console.log(todo.due_date.slice(0,10));
+              $('.list-group-item').append(
+                `
+              <div class="list-todos mb-3 todo-item">
+              <p id="todo_id" hidden>${todo._id}</p>
+              <h4 class="list-group-item-title">${todo.title}</h4>
+              <p class="list-group-item-text">${todo.description}</p>
+              <p class="list-group-item-text due_date">Due date : ${todo.due_date.slice(0, 10)}</p>
+              <div class="list-btn">
+                <a href="" class="btn btn-info btn-sm">
+                  <i class="fas fa-check"></i>
+                </a>
+                <a href="" id="update-task" class="btn btn-default btn-sm" onclick="showTaskUpdate('${todo._id}','${todo.title}','${todo.description}', '${todo.due_date}')">
+                  <i class="fas fa-edit"></i>
+                </a>
+                <a href="" class="btn btn-danger btn-sm delete-task" data-toggle="modal" data-target="#modalConfirmDelete" onclick="deleteTask('${todo._id}')">
+                  <i class="fas fa-times"></i>
+                </a>
+              </div>
+              </div>
+              `
+              )
+              event.preventDefault();
+            });
+          })
+          .fail(error => {
+            console.log(error);
+          });
+      }
+
+      // Update Todo
+      function showTaskUpdate(id, title, description, date) {
+        event.preventDefault();
+        $("#todo_id").val(id);
+        $("#title_update").val(title);
+        $("#description_update").val(description);
+        $("#date_update").val(date.slice(0, 10));
+        $('#updateTask').modal('show');
+      }
+
+      $('#updateForm').on('click', function (event) {
+        event.preventDefault();
+        $.ajax({
+          url: 'http://localhost:3000/tasks',
+          method: 'PUT',
+          headers: { token: localStorage.getItem('token') },
+          data: {
+            _id: $("#todo_id").val(),
+            title: $('#title_update').val(),
+            description: $('#description_update').val(),
+            due_date: $('#date_update').val()
+          }
+        })
+          .done(response => {
+            $('#success_update').show().html(response.message);
+            $('.list-group-item').empty();
+            $('#title_update').val('');
+            $('#description_update').val('');
+            $('#date_update').val('');
+            $('#field').hide();
+            $('#login').hide();
+            readData();
+          })
+          .fail(error => {
+            console.log(error);;
+          });
+      });
+
+      // Delete
+      function deleteTask(id) {
+        $("#todo_id").val(id);
+      }
+
+      $('#task_delete').on('click', function (event) {
+        event.preventDefault();
+        $.ajax({
+          url: 'http://localhost:3000/tasks',
+          method: 'DELETE',
+          headers: { token: localStorage.getItem('token') },
+          data: {
+            _id: $("#todo_id").val()
+          }
+        })
+          .done(response => {
+            $('.list-group-item').empty();
+            readData();
+          })
+          .fail(error => {
+            console.log(error);
+          });
+      });
+
+      // Show Modal
+      $(document).ready(function () {
+        $('.show-addTask').on('click', function (event) {
+          event.preventDefault();
+          $('#addTask').modal('show');
+        });
+      });
+
+      // Close use Esc key
+      $(document).keyup(function (e) {
+        if (e.key === "Escape") {
+          $('#task').val('');
+          $('#description').val('');
+          $('#date').val('');
+          $('#field').hide();
+          $('#login').hide();
+          $('#success').hide();
+          $('#success_update').hide();
+        }
+      });
+
+      // Close use click
+      $('.closeForm').on('click', function (event) {
+        $('#task').val('');
+        $('#description').val('');
+        $('#date').val('');
+        $('#field').hide();
+        $('#login').hide();
+        $('#success').hide();
+        $('#success_update').hide();
+      });
+
+      // Signout
+      $('.signout').on('click', function (event) {
+        event.preventDefault();
+      });
+
+    </script>
+</body>
+
+</html>

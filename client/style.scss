@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css?family=Lobster');
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  letter-spacing: 1px;
+  user-select: none;
+  background: url('./img/seamless_paper_texture.png');
+}
+
+header {
+  font-family: 'Lobster', cursive;
+  color: #3e4239;
+  margin-top: -4px;
+}
+
+.form-reg {
+  width: 450px;
+  margin: 30px auto;
+}
+
+.signup,
+.login{
+  width: 50%;
+  background: #fff;
+  float: left;
+  height: 60px;
+  line-height: 60px;
+  text-align: center;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.signup-form,
+.login-form{
+  background: #fff;
+  padding: 40px;
+  clear: both;
+  width: 100%;
+  box-sizing: border-box;
+  height: 400px;
+}
+
+.input{
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  margin-bottom: 25px;
+  border: 2px solid #e9eaea;
+  color: #3e3e40;
+  font-size: 14px;
+  outline: none;
+  transform: all 0.5s ease;
+}
+
+.input:focus{
+  border: 2px solid #34b3a0;
+}
+
+.btn-signup, .btn-signin {
+  width: 100%;
+  margin: 15px 0;
+  background: #34b3a0;
+  height: 50px;
+  text-align: center;
+  line-height: 20px;
+  text-transform: uppercase;
+  color: #fff;
+  font-weight: bold;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+
+.row {
+  justify-content: center;
+  .todo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    h1 {
+      text-align: center;
+      font-weight: lighter;
+    }
+  }
+}
+
+.due_date {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 3mm;
+}
+.list-btn {
+  display: flex;
+  justify-content: flex-end;
+}
