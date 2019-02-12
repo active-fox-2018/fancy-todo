@@ -9,7 +9,7 @@ router.get('/:projectId', checkMember, project.getOne)
 router.post('/', project.create)
 router.delete('/:projectId', checkMember, project.delete)
 
-router.post('/:projectId/:userId', checkMember, project.invite)
+router.post('/invite/:projectId', checkMember, project.invite)
 router.post('/:projectId', checkMember, project.createTodo)
 router.put('/:projectId/:todoId', checkMember, project.updateTodo)
 router.delete('/:projectId/:todoId', checkMember, project.deleteTodo)

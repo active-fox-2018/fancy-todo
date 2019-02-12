@@ -1,4 +1,4 @@
-const { Project, Todo } = require('../models')
+const { Project, Todo, User } = require('../models')
 
 module.exports = {
     create(req, res) {
@@ -9,7 +9,7 @@ module.exports = {
         Project
             .create(newProject)
             .then(project => {
-                res.status(200).json(project)
+                res.status(201).json(project)
             })
             .catch(err => {
                 res.status(500).json({
@@ -52,7 +52,7 @@ module.exports = {
         Project
             .findOneAndDelete(req.params.projectId)
             .then(project => {
-                res.status(500).json(project)
+                res.status(200).json(project)
             })
             .catch(err => {
                 console.log(err);
@@ -63,12 +63,18 @@ module.exports = {
             })
     },
     invite(req, res) {
-        Project
-            .findByIdAndUpdate(req.params.projectId, {$push:  {members: req.params.userId}}, {new: true})
-            // .populate("members")
-            // .populate("todos")
-            .then(project => {
-                res.status(200).json(project)
+        User
+            .findOne({email: req.body.email})
+            .then(user => {
+                if (user) {
+                    Project
+                        .findByIdAndUpdate(req.params.projectId, {$push:  {members: user._id}}, {new: true})
+                        .then(project => {
+                            res.status(200).json(project)
+                        })
+                } else {
+                    res.status(404).json({msg: "user not found"})
+                }
             })
             .catch(err => {
                 console.log(err);
@@ -83,7 +89,8 @@ module.exports = {
             userId: req.user._id,
             name: req.body.name,
             description: req.body.description,
-            due_date: req.body.due_date
+            due_date: req.body.due_date,
+            status: req.body.status
         }
         Todo
             .create(newTodo)
@@ -105,7 +112,8 @@ module.exports = {
             name: req.body.name,
             description: req.body.description,
             status: req.body.status,
-            due_date: req.body.due_date
+            due_date: req.body.due_date,
+            status: req.body.status
         }
         for (const key in newTodo) {
             if (!newTodo[key]) {
@@ -133,7 +141,7 @@ module.exports = {
                 $pull: { todos: req.params.todoId }
             })
             .then(project => {
-                Todo.findByIdAndRemove(req.params.todoId)
+                return Todo.findByIdAndRemove(req.params.todoId)
             })
             .then(todo => {
                 res.status(200).json(todo)

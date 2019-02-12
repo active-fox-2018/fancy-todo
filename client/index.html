@@ -13,6 +13,7 @@
     <title>O-Todos</title>
   </head>
   <body>
+
     <div id="loginRegister" class="container" style="padding-top:4.2rem; padding-bottom:4.2rem;">
       <div class="row">
         <div class="col-md-5 mx-auto">
@@ -94,23 +95,25 @@
       </nav>
 
       <div id="content" class="container-fluid">
-
         <!-- MY TODOS -->
-        <div class="row">
+        <div id="myTodoDetail" class="row">
           <!-- TODOS -->
           <div class="col-sm-8">
             <button type="button" class="btn btn-primary btn-sm mx-3 mt-3" onclick="createTodo()" data-toggle="modal" data-target="#todoForm">+ Create new todo</button>
             <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Launch demo modal</button> -->
+
+            <!-- CARD -->
             <div id="myTodos"></div>
+
           </div>
           <!-- PROJECTS -->
           <div class="col-sm-4">
             <div class="card my-3">
               <h5 class="card-header" style="font-family: 'Kaushan Script', cursive;">My projects</h5>
               <div class="card-body">
-                <ul id="myProjects">
 
-                </ul>
+                <ul id="myProjects"></ul>
+
                 <button type="button" class="btn btn-primary mx-1" onclick="createProject()" data-toggle="modal" data-target="#projectForm">Create new project</button>
               </div>
             </div>
@@ -140,6 +143,17 @@
                   <div class="form-group">
                     <label for="exampleInputEmail1">Due Date</label>
                     <input type="date" name="todoDueDate" class="form-control" id="todoDueDate" aria-describedby="emailHelp" placeholder="Enter due date" required>
+                  </div>
+                  <div class="form-group">
+                    <!-- <p> Status</p> -->
+                    <div id="status" class="btn-group btn-group-toggle" data-toggle="buttons">
+                      <label class="btn btn-default blue">
+                        <input type="radio" class="toggle" value="complete"> Complete
+                      </label>
+                      <label class="btn btn-default blue">
+                        <input type="radio" class="toggle" value="uncomplete"> Uncomplete
+                      </label>
+                    </div>
                   </div>
                 </div>
                 <div class="modal-footer">
@@ -174,35 +188,45 @@
           </div>
         </div>
 
+        <div class="modal fade" id="inviteForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" style="font-family: 'Kaushan Script', cursive;">Invite member</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <form method="POST" name="inviteForm">
+                <div class="modal-body">
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Email address</label>
+                    <input type="email" name="email"  class="form-control" id="emailInvite" aria-describedby="emailHelp" placeholder="Enter email" required>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary">Invite</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
         <!-- PROJECT DETAIL -->
         <div id="myProjectDetail" class="row">
+
           <!-- PROJECTS TODO -->
-          <div class="col-sm-8">
-            <button type="button" class="btn btn-primary btn-sm mx-3 mt-3" onclick="createProjectTodo()" data-toggle="modal" data-target="#todoForm">+ Create new todo</button>
-            <div class="card mx-3 my-3">
-              <div class="card-header" style="font-family: 'Kaushan Script', cursive;">TODOS name</div>
-              <div class="card-body">
-                <p class="card-text">Todos Description .....</p>
-                <div class=" text-right">
-                  <button type="button" class="btn btn-primary btn-sm mx-1">edit</button>
-                  <button type="button" class="btn btn-danger btn-sm mx-1">delete</button>
-                </div>
-              </div>
-            </div>
+          <div id="projectTodos" class="col-sm-8">
+
           </div>
           <!-- PROJECTS MEMBER -->
           <div class="col-sm-4">
             <div class="card my-3">
               <h5 class="card-header" style="font-family: 'Kaushan Script', cursive;">Members:</h5>
-              <div class="card-body">
-                <ul>
-                  <li>member 1</li>
-                  <li>member 2</li>
-                  <li>member 3</li>
-                  <li>member 4</li>
-                  <li>member 5</li>
-                </ul>
-                <button type="button" class="btn btn-primary mx-1">Invite new member</button>
+              <div id="projectMembers" class="card-body">
+
+                <!-- MEMBERS -->
+
               </div>
             </div>
           </div>
@@ -210,6 +234,7 @@
 
       </div>
     </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.15.1/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>

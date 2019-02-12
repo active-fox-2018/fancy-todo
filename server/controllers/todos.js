@@ -6,7 +6,8 @@ module.exports = {
             userId: req.user._id,
             name: req.body.name,
             description: req.body.description,
-            due_date: req.body.due_date
+            due_date: req.body.due_date,
+            status: req.body.status
         }
         Todo
             .create(newTodo)
